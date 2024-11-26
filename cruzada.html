@@ -1,0 +1,90 @@
+# Jogo da Cruzadinha
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Cruzadinha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 20px;
+        }
+        td {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+        }
+        input {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-size: 20px;
+        }
+        .hint {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Jogo da Cruzadinha</h1>
+<div class="hint">Dicas: 1. Animal de estimação mais comum. 2. Fruta amarela.</div>
+<table>
+    <tr>
+        <td><input type="text" maxlength="1" data-answer="g"></td>
+        <td><input type="text" maxlength="1" data-answer="a"></td>
+        <td><input type="text" maxlength="1" data-answer="t"></td>
+        <td><input type="text" maxlength="1" data-answer="o"></td>
+        <td><input type="text" maxlength="1" data-answer=" "></td>
+
+    </tr>
+    <tr>
+        <td><input type="text" maxlength="1" data-answer="c"></td>
+        <td><input type="text" maxlength="1" data-answer="a"></td>
+        <td><input type="text" maxlength="1" data-answer="b"></td>
+        <td><input type="text" maxlength="1" data-answer="a"></td>
+    </tr>
+    <tr>
+        <td><input type="text" maxlength="1" data-answer="c"></td>
+        <td><input type="text" maxlength="1" data-answer="a"></td>
+        <td><input type="text" maxlength="1" data-answer="b"></td>
+        <td><input type="text" maxlength="1" data-answer="a"></td>
+        <td><input type="text" maxlength="1" data-answer="a"></td>
+    </tr>
+</table>
+<button onclick="checkAnswers()">Verificar Respostas</button>
+<script>
+    function checkAnswers() {
+        const inputs = document.querySelectorAll('input');
+        let correct = true;
+        inputs.forEach(input => {
+            if (input.value.toLowerCase() !== input.dataset.answer) {
+                correct = false;
+                input.style.backgroundColor = 'red';
+            } else {
+                input.style.backgroundColor = 'green';
+            }
+        });
+        if (correct) {
+            alert('Parabéns! Você completou a cruzadinha!');
+        } else {
+            alert('Algumas respostas estão incorretas. Tente novamente!');
+        }
+    }
+</script>
+
+</body>
+</html>

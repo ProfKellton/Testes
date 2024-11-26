@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expanded Toggle Menu</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: flex-start; /* ou flex-end */
+            align-items: flex-start; /* ou flex-end */
+            min-height: 100vh;
+            background: #2f363e;
+        }
+
+        .menu {
+            position: fixed;
+            bottom: 20px; /* Distância da borda inferior */
+            left: 20px;   /* Distância da borda esquerda */
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.5s;
+        }
+
+
+        .menu.active {
+            width: 400px;
+            height: 400px;
+        }
+        .menu li {
+            position: absolute;
+            list-style-type: none;
+            transform: translate(0, 0) scale(0);
+            transition: 0.5s;
+            opacity: 0;
+            width: 60px;
+            height: 60px;
+        }
+        .menu.active li {
+            transform: translate(var(--x), var(--y)) scale(1);
+            opacity: 1;
+            transition-delay: calc(0.1s * var(--i));
+        }
+        .menu .toggleBtn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #2f363e;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 2em;
+            transition: 0.5s;
+        }
+        .menu .toggleBtn:hover {
+            background: #4a5260;
+        }
+        .menu.active .toggleBtn {
+            transform: rotate(315deg);
+        }
+        .menu li a {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border: 2px solid var(--clr);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            border-radius: 50%;
+            font-size: 1.5em;
+            transition: 0.5s;
+            color: var(--clr);
+            
+        }
+     
+        .menu li a:hover {
+            color: #fff;
+            background: var(--clr);
+            box-shadow: 0 0 10px var(--clr),
+            0 0 30px var(--clr),
+            0 0 50px var(--clr);
+        }
+       
+       
+    </style>
+</head>
+<body>
+    <ul class="menu">
+        <div class="toggleBtn">
+            <ion-icon name="add-outline"></ion-icon>
+        </div>
+        <li style="--i:0; --x:-150px; --y:0px; --clr: rgb(183, 255, 0);"><a href="#"><ion-icon name="person-outline"></ion-icon></a></li>
+        <li style="--i:1; --x:150px; --y:0px; --clr: rgb(255, 174, 0); "><a href="#"><ion-icon name="code-slash-outline"></ion-icon></a></li>
+        <li style="--i:2; --x:0px; --y:-150px;  --clr: rgb(43, 255, 0);  "><a href="#"><ion-icon name="flower-outline"></ion-icon></a></li>
+        <li style="--i:3; --x:105px; --y:105px; --clr: rgb(255, 0, 43); "><a href="#"><ion-icon name="image-outline"></ion-icon></a></li>
+        <li style="--i:4; --x:-105px; --y:-105px; --clr: rgb(0, 255, 187);"><a href="#"><ion-icon name="navigate-outline"></ion-icon></a></li>
+        <li style="--i:5; --x:0px; --y:150px; --clr: rgb(0, 153, 255);"><a href="#"><ion-icon name="mail-unread-outline"></ion-icon></a></li>
+        <li style="--i:6; --x:105px; --y:-105px; --clr: rgb(185, 100, 255);"><a href="#"><ion-icon name="laptop-outline"></ion-icon></a></li>
+        <li style="--i:7; --x:-105px; --y:105px; --clr: rgb(255, 0, 200);" ><a href="#"><ion-icon name="notifications-outline"></ion-icon></a></li>
+    </ul>
+    <script>
+        let toggleBtn = document.querySelector('.toggleBtn');
+        let menu = document.querySelector('.menu');
+        toggleBtn.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
