@@ -1,124 +1,107 @@
-const stageBg = document.querySelector('.stage-bg')
-const stageFg = document.querySelector('.stage-fg')
-const score = document.querySelector('.score')
-const timer = document.querySelector('.timer')
-const veg = ['🌽','🍅','🥕','🍆','🥬','🥔','🥦','🧅','🧄','🌶️','🥒']
-const vegTLs = []
-const props = { x:0, dir:1 }
-let vegNum = 0
-let pts = 0
-let timeScale = 1
+const stageBg = document.querySelector('.stage-bg');
+const scoreElement = document.querySelector('.score');
+const timerElement = document.querySelector('.timer');
+const startButton = document.querySelector('.start');
+const replayButton = document.querySelector('.replay');
+const cursor = document.querySelector('.cursor');
 
-gsap.set('.follower', {filter:'drop-shadow(30px 30px 4px rgba(0,0,0,0.1))'})
-gsap.set('.dagger', {rotate:125, xPercent:-50, yPercent:-55})
+const vegIcons = [
+    { icon: '🌽', value: 1 },
+    { icon: '🍅', value: 2 },
+    { icon: '🥕', value: 3 },
+    { icon: '🍆', value: 4 },
+    { icon: '🥬', value: 5 },
+    { icon: '🥔', value: 6 },
+    { icon: '🥦', value: 7 },
+    { icon: '🧅', value: 8 },
+    { icon: '🧄', value: 9 },
+    { icon: '🌶️', value: 10 },
+    { icon: '🥒', value: 11 },
+];
 
-window.onpointerdown = (e)=> {
-  gsap.timeline({defaults:{duration:0.3, ease:'back.out(4)'}})
-    .to('.dagger', {rotate:200, xPercent:-30, scale:0.8}, 0)
-    .to('.follower', {filter:'drop-shadow(5px 7px 2px rgba(0,0,0,0.3))'}, 0)
-    .add(()=>{ //check distance between veg and dagger
-      const mark = document.createElement('div')
-      stageFg.append(mark)
-      gsap.fromTo(mark, {innerHTML:'🗯️', x:e.x+84, y:e.y-20, rotate:'random(0,360)'}, {scale:4, duration:0.1, opacity:0.5, onComplete:()=>mark.remove()})    
-      for (const item of stageBg.children) {
-        const dX = Math.abs(gsap.getProperty(item,'x') - (e.x+84))
-        const dY = Math.abs(gsap.getProperty(item,'y') - (e.y-25))
-        const dist = (dX + dY) / 2
-        if (dist<60){
-          if (item.innerHTML=='⏱️') {
-            timeScale = 0.2
-            gsap.to(vegTLs, {timeScale:timeScale})
-            gsap.to('.stage-bg', {background:'linear-gradient(rgba(0,120,230,0.5) 77%,rgba(0,100,255,0.9))'})
-            gsap.delayedCall(5, ()=>{
-              timeScale = 1
-              gsap.set(vegTLs, {timeScale:1})
-              gsap.to('.stage-bg', {background:'linear-gradient(rgba(0,0,0,0) 77%,rgba(0,0,0,0.5))'})
-            })
-          }
-          pts++
-          score.innerHTML = 'Sliced '+pts+'<span class="num"> / '+vegNum+'</span>'
-          stageFg.append(item)
-          gsap.timeline()
-          .set(mark, {autoAlpha:0})
-          .set(item, {innerHTML:'💥', rotate:'random(0,200,0)', filter:'drop-shadow(0px 0px 0px rgba(0,0,0,0))'})
-          .to(item, {duration:0.1, scale:2})
-          .to(item, {duration:0.1, scale:0, ease:'expo.inOut'})
+let score = 0;
+let timer = 30;
+let gameActive = false;
+let intervalId;
+
+// Atualiza a posição do cursor personalizado
+document.addEventListener('mousemove', (e) => {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+});
+
+// Inicia o jogo
+function startGame() {
+    score = 0;
+    timer = 30;
+    gameActive = true;
+    scoreElement.textContent = `Score: ${score}`;
+    timerElement.textContent = `⏱️ ${timer}s`;
+    startButton.style.display = 'none';
+    replayButton.style.display = 'none';
+    stageBg.innerHTML = '';
+    spawnVegetable();
+    intervalId = setInterval(updateTimer, 1000);
+}
+
+// Atualiza o cronômetro
+function updateTimer() {
+    timer--;
+    timerElement.textContent = `⏱️ ${timer}s`;
+    if (timer <= 0) endGame();
+}
+
+// Finaliza o jogo
+function endGame() {
+    gameActive = false;
+    clearInterval(intervalId);
+    replayButton.style.display = 'block';
+}
+
+// Gera vegetais na tela e os faz se mover
+function spawnVegetable() {
+    if (!gameActive) return;
+
+    const vegData = vegIcons[Math.floor(Math.random() * vegIcons.length)];
+    const veg = document.createElement('div');
+    veg.textContent = vegData.icon;
+    veg.dataset.value = vegData.value;
+    veg.classList.add('vegetable');
+    veg.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+    veg.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+
+    stageBg.appendChild(veg);
+
+    // Move o vegetal horizontalmente
+    gsap.to(veg, {
+        x: `${Math.random() > 0.5 ? '+=' : '-='}${Math.random() * 200}px`,
+        duration: Math.random() * 2 + 2,
+        repeat: -1,
+        yoyo: true,
+    });
+}
+
+// Detecta o corte de vegetais
+document.addEventListener('mousedown', (e) => {
+    if (!gameActive) return;
+
+    const vegetables = document.querySelectorAll('.vegetable');
+    vegetables.forEach((veg) => {
+        const rect = veg.getBoundingClientRect();
+        if (
+            e.clientX >= rect.left &&
+            e.clientX <= rect.right &&
+            e.clientY >= rect.top &&
+            e.clientY <= rect.bottom
+        ) {
+            score += parseInt(veg.dataset.value);
+            scoreElement.textContent = `Score: ${score}`;
+            veg.remove();
+            spawnVegetable(); // Gera outro vegetal após o clique
         }
-      }
-    }, 0.15)
-}
+    });
+});
 
-window.onpointerup = (e)=> {
-  gsap.to('.dagger', {duration:0.3, rotate:125, xPercent:-50, scale:1})
-  gsap.to('.follower', {duration:0.3, filter:'drop-shadow(30px 30px 4px rgba(0,0,0,0.1))'})
-}
-
-window.onpointermove = (e)=>{  
-  props.x = gsap.getProperty('.follower', 'x')
-  props.dir = (e.x>props.x)? -1:1  
-  gsap.to('.follower', {y:e.y})
-  gsap.to('.follower', {x:e.x, duration:1, ease:'expo', onUpdate:()=>{
-    const rot = Math.abs(e.x-gsap.getProperty('.follower', 'x'))/6
-    gsap.set('.follower', {rotate:gsap.utils.clamp(0,33,rot)*props.dir})
-  }})
-}
-
-function addveg(){ 
-  vegNum++
-  score.innerHTML = 'Sliced '+pts+'<span class="num"> / '+vegNum+'</span>'
-  const f = document.createElement('div')
-  stageBg.append(f)
-  vegTLs.push(
-    gsap.timeline({onComplete:()=>{f.remove(); vegTLs.shift()}})
-    .fromTo(f, {
-      innerHTML:(vegNum==8||vegNum==36)?'⏱️':veg[gsap.utils.random(0,veg.length-1,1)],
-      fontSize:99,
-      xPercent:-50,
-      yPercent:-50,
-      y:innerHeight+99,
-      x:gsap.utils.random(200,innerWidth-100,1),
-      rotate:(vegNum%2==0)?10:-10,
-      filter: 'drop-shadow(20px -10px 4px rgba(0,0,0,0.2))'
-    }, {
-      duration:3,
-      x:'+='+'random(-200,200)',
-      rotate:(vegNum%2==0)?-10:10
-    })
-    .to(f, {
-      y:gsap.utils.random(0,innerHeight/2,1),    
-      filter: 'drop-shadow(30px 30px 4px rgba(0,0,0,0.1))',
-      duration:1.5,
-      yoyo:true,
-      repeat:1
-    }, 0)
-    .timeScale(timeScale)  
-  )  
-}
-
-const vegTL = gsap.to(window, {duration:1, repeat:50, onRepeat:addveg})
-
-const timerTL = gsap.timeline({onComplete:gameEnd})
-  .to('.timer .face', {rotate:-50, ease:'power1.in'})
-  .to('.timer .face', {rotate:0, ease:'none', duration:vegTL.totalDuration()})
-
-function gameEnd(){
-  gsap.timeline()
-  .fromTo('.replay', {
-    innerHTML:'⬅️ Replay?',
-    opacity:0,
-    x:100
-  },{
-    ease:'back.out(3)',
-    opacity:1,
-    x:0
-  })
-  
-  timer.onclick=()=>{
-    timer.onclick = null
-    pts = vegNum = 0
-    score.innerHTML = 'Score: 0'
-    gsap.to('.replay', {opacity:0})
-    vegTL.play(0)
-    timerTL.play(0)
-  }
-}
+// Configura os botões
+startButton.onclick = startGame;
+replayButton.onclick = startGame;
