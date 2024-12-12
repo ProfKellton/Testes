@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Chamado das Sombras</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f0e7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 900px;
+            text-align: center;
+        }
+        .cover, .prologue, .story-page {
+            display: none;
+        }
+        .visible {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Capa */
+        .book-cover {
+            width: 300px;
+            height: 450px;
+            background: linear-gradient(to bottom, #8b4513, #5a3310);
+            color: #f4f4f4;
+            border: 5px solid #38210c;
+            border-radius: 5px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .book-cover h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .book-cover p {
+            font-size: 16px;
+        }
+        .cover button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #5a3310;
+            color: #f4f4f4;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cover button:hover {
+            background-color: #38210c;
+        }
+
+        /* Livro aberto */
+        .book {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 900px;
+            height: 600px;
+            background: #fff;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .page {
+            width: 50%;
+            padding: 30px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            height: 100%;
+        }
+        .page-left {
+            background: #f9f7f2;
+            border-right: 1px solid #ddd;
+            left: 0;
+            z-index: 1;
+        }
+        .page-right {
+            background: #fdfbf7;
+            right: 0;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .page-left img, .result-image {
+            width: 100%;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        .page-right button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 16px;
+            background-color: #8b4513;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .page-right button:hover {
+            background-color: #5a3310;
+        }
+        .choices {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .choices .choice {
+            margin: 10px 0;
+        }
+        .flip {
+            animation: flipPage 1s forwards;
+        }
+        @keyframes flipPage {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(-90deg); }
+            100% { transform: rotateY(-180deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Capa do Livro -->
+        <div class="cover visible" id="cover">
+            <div class="book-cover">
+                <h1>O Legado de Rodrick</h1>
+                <p>Um conto de magia, mistério e escolhas</p>
+            </div>
+            <button onclick="showSection('prologue')">Iniciar História</button>
+        </div>
+
+        <!-- Prólogo -->
+        <div class="prologue" id="prologue">
+            <div class="book">
+                <div class="page page-left">
+                    <h2>Prólogo</h2>
+                    <p>A Última Lição: O jovem aprendiz de magia, Elias, sempre admirou o poder e sabedoria de seu mentor, Rodrick. Mas o mundo de Elias desmorona quando Rodrick é encontrado morto em circunstâncias misteriosas. Em seus últimos momentos, Rodrick deixou para Elias um grimório antigo e uma enigmática frase:</p>
+                    <p>"Tudo o que busca está nas sombras."</p>
+                    <p>Agora, Elias deve descobrir os segredos do grimório e a verdade por trás da morte de seu mestre. Ele embarca em uma jornada onde cada escolha pode revelar ou ocultar segredos cruciais.</p>
+                    <img src="ImagensC1/Prólogo.webp" alt="Cena do prólogo">
+                </div>
+                <div class="page page-right">
+                    <button onclick="flipPage('story')">Começar História</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página do Livro -->
+        <div class="story-page" id="story">
+            <div class="book">
+                <div class="page page-left" id="story-left">
+                    <h2>Capítulo 1: O Chamado das Sombras</h2>
+                    <p>O silêncio pesava na casa de Rodrick como uma mortalha. O aprendiz Elias andava de um lado para o outro no pequeno salão repleto de pergaminhos e livros desordenados, o cheiro de cera queimada e ervas secas impregnando o ar. Ele mal podia acreditar que o homem que o havia ensinado por tantos anos estava morto. No entanto, o grimório deixado sobre a mesa parecia sussurrar por atenção, como se ainda pulsasse com a essência de seu mentor.
+
+                        Elias folheou o grimório, sentindo o toque áspero das páginas antigas sob seus dedos. Ele se lembrava da voz firme de Rodrick enquanto lhe dizia:
+                        "A magia é uma chama, Elias. Pode iluminar ou consumir, dependendo de quem a empunha."
+                        
+                        Subitamente, um vento invisível atravessou a sala, fazendo com que as páginas do grimório se abrisse em uma seção que Elias nunca vira antes. Havia ali três objetos cuidadosamente desenhados e anotados com escritas que tremeluziam, como se escritas pelo próprio fogo.</p>
+                    <img src="chapter1.jpg" alt="Imagem do Capítulo 1">
+                </div>
+                <div class="page page-right" id="story-right">
+                    <div class="choices">
+                        <div class="choice">
+                            <button onclick="selectChoice(1)">Um mapa queimado, com linhas que pareciam mudar sob o olhar de Elias. Ao tocá-lo, ele sentiu um formigamento na ponta dos dedos.</button>
+                        </div>
+                        <div class="choice">
+                            <button onclick="selectChoice(2)">Um cristal cintilante, cuja luz parecia pulsar como um coração vivo. Quando aproximado, Elias ouviu um sussurro distante, como vozes presas em outra dimensão.</button>
+                        </div>
+                        <div class="choice">
+                            <button onclick="selectChoice(3)">Uma chave negra, entalhada em metal estranho que parecia absorver a luz ao redor. Quando Elias a segurou, um arrepio percorreu sua espinha.</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="page-flip-sound" src="page-flip.mp3"></audio>
+
+    <script>
+        // Alterna entre as seções
+        function showSection(sectionId) {
+            document.querySelectorAll('.container > div').forEach(section => {
+                section.classList.remove('visible');
+            });
+            document.getElementById(sectionId).classList.add('visible');
+        }
+
+        // Simula o virar da página com som
+        function flipPage(nextSection) {
+            const book = document.querySelector('.book');
+            const audio = document.getElementById('page-flip-sound');
+            audio.play();
+            book.classList.add('flip');
+            setTimeout(() => {
+                showSection(nextSection);
+                book.classList.remove('flip');
+            }, 1000);
+        }
+
+        // Resultados das escolhas e imagens correspondentes
+        const results = {
+            1: {
+                text: "Elias desdobrou o mapa e observou enquanto as marcas mudavam, formando lentamente a figura de uma torre solitária cercada por neblina. Ao lado da figura, palavras surgiram: 'Onde o horizonte se dissolve, os segredos aguardam'. Determinando-se a seguir a pista, Elias empacotou o grimório e partiu ao amanhecer. Sua jornada o levou a um vale desolado, onde o ar parecia pesar com uma presença invisível. Ele encontrou a torre – uma estrutura de pedra escura que parecia ter emergido diretamente da terra. No entanto, ao se aproximar, sombras começaram a se mover, formando criaturas etéreas com olhos brilhantes.Elias precisava decidir:",
+                img: "mapa_result.jpg",
+                newChoices: [
+                    // Escolha 1A
+                    "Enfrentar as criaturas diretamente.",
+                    // Escolha 1B
+                    "Tentar enganá-las com um feitiço de ilusão.",
+                    // Escolha 1C
+                    "Recitar as palavras gravadas no grimório."
+                ]
+            },
+            2: {
+                text: "Quando Elias segurou o cristal, foi envolvido por uma luz branca e se viu em um lugar completamente diferente. Árvores com folhas douradas brilhavam sob um céu púrpura, e no centro da clareira havia um templo que parecia feito de ossos. Uma figura encapuzada esperava por ele, sua presença emitindo uma energia quase insuportável. A figura falou, sua voz ecoando como trovões distantes:'Você é o herdeiro? Mostre-me sua coragem ou pereça.'",
+                img: "cristal_result.jpg",
+                newChoices: [
+                    // Escolha 2A
+                    "Entrar no templo sem hesitação.",
+                    // Escolha 2B
+                    "Conversar com a figura e tentar obter mais informações.",
+                    // Escolha 2C
+                    "Usar magia para tentar escapar."
+                ]
+            },
+            3: {
+                text: "A chave parecia vibrar levemente enquanto Elias a segurava. De repente, um ruído grave ressoou pela casa de Rodrick, e o chão começou a rachar, revelando uma escadaria oculta. Ao descer, Elias encontrou uma câmara iluminada por uma luz verde etérea. No centro, havia uma mesa com um diário antigo e um artefato estranho que parecia ser uma combinação de um espelho e uma esfera. No diário, Elias leu:'A chave negra é a conexão entre mundos. Mas cuidado: cada porta exige um preço.' Elias precisava decidir:",
+                img: "chave_result.jpg",
+                newChoices: [
+                    // Escolha 3A
+                    "Usar a chave para ativar o artefato.",
+                    // Escolha 3B
+                    "Continuar lendo o diário em busca de mais pistas.",
+                    // Escolha 3C
+                    "Deixar o local e buscar ajuda."
+                ]
+            }
+        };
+
+        // Processa a escolha
+        function selectChoice(choice) {
+            const choiceResult = results[choice];
+            const leftPage = document.getElementById('story-left');
+            const rightPage = document.getElementById('story-right');
+            
+            // Atualiza o lado esquerdo com o texto e imagem da escolha
+            leftPage.innerHTML = `
+                <p>${choiceResult.text}</p>
+                <img src="${choiceResult.img}" alt="Resultado" class="result-image">
+            `;
+            
+            // Atualiza o lado direito com novas escolhas
+            rightPage.innerHTML = choiceResult.newChoices.map((choiceText, index) => `
+                <button onclick="selectChoice(${choice}${index + 1})">${choiceText}</button>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
