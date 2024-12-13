@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Chamado das Sombras</title>
+    <title>Legado de Rodrick</title>
     <style>
         body {
             font-family: 'Georgia', serif;
@@ -148,10 +148,10 @@
     <div class="container">
         <!-- Capa do Livro -->
         <div class="cover visible" id="cover">
-            <div class="book-cover">
-                <h1>O Legado de Rodrick</h1>
-                <p>Um conto de magia, mistério e escolhas</p>
-            </div>
+            <div class="book-cover" style="background-image: url('ImagensC1/Capa.webp'); background-size: cover; background-position: center;">
+                <h1 style="background-color: rgba(0, 0, 0, 0.5); padding: 10px; border-radius: 5px;">O Legado de Rodrick</h1>
+                <p style="background-color: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 5px;">Um conto de magia, mistério e escolhas</p>
+            </div>            
             <button onclick="showSection('prologue')">Iniciar História</button>
         </div>
 
@@ -176,13 +176,12 @@
             <div class="book">
                 <div class="page page-left" id="story-left">
                     <h2>Capítulo 1: O Chamado das Sombras</h2>
-                    <p>O silêncio pesava na casa de Rodrick como uma mortalha. O aprendiz Elias andava de um lado para o outro no pequeno salão repleto de pergaminhos e livros desordenados, o cheiro de cera queimada e ervas secas impregnando o ar. Ele mal podia acreditar que o homem que o havia ensinado por tantos anos estava morto. No entanto, o grimório deixado sobre a mesa parecia sussurrar por atenção, como se ainda pulsasse com a essência de seu mentor.
+                    <p>O silêncio pesava na casa de Rodrick como uma mortalha. O aprendiz Elias andava de um lado para o outro no pequeno salão repleto de pergaminhos e livros desordenados, o cheiro de cera queimada e ervas secas impregnando o ar. Ele mal podia acreditar que o homem que o havia ensinado por tantos anos estava morto. No entanto, o grimório deixado sobre a mesa parecia sussurrar por atenção, como se ainda pulsasse com a essência de seu mentor.</p>
 
-                        Elias folheou o grimório, sentindo o toque áspero das páginas antigas sob seus dedos. Ele se lembrava da voz firme de Rodrick enquanto lhe dizia:
-                        "A magia é uma chama, Elias. Pode iluminar ou consumir, dependendo de quem a empunha."
-                        
-                        Subitamente, um vento invisível atravessou a sala, fazendo com que as páginas do grimório se abrisse em uma seção que Elias nunca vira antes. Havia ali três objetos cuidadosamente desenhados e anotados com escritas que tremeluziam, como se escritas pelo próprio fogo.</p>
-                    <img src="chapter1.jpg" alt="Imagem do Capítulo 1">
+                    <img src="ImagensC1/Capítulo1.webp" alt="Imagem do Capítulo 1">
+                    <p>Elias folheou o grimório, sentindo o toque áspero das páginas antigas sob seus dedos. Ele se lembrava da voz firme de Rodrick enquanto lhe dizia: "A magia é uma chama, Elias. Pode iluminar ou consumir, dependendo de quem a empunha."</p>
+
+                    <p>Subitamente, um vento invisível atravessou a sala, fazendo com que as páginas do grimório se abrisse em uma seção que Elias nunca vira antes. Havia ali três objetos cuidadosamente desenhados e anotados com escritas que tremeluziam, como se escritas pelo próprio fogo.</p>
                 </div>
                 <div class="page page-right" id="story-right">
                     <div class="choices">
@@ -201,7 +200,7 @@
         </div>
     </div>
 
-    <audio id="page-flip-sound" src="page-flip.mp3"></audio>
+    <audio id="page-flip-sound" src="Sons/paper-turn-40077 (mp3cut.net).mp3"></audio>
 
     <script>
         // Alterna entre as seções
@@ -224,63 +223,350 @@
             }, 1000);
         }
 
+
+// =============================================================================================================================
+
+
         // Resultados das escolhas e imagens correspondentes
         const results = {
-            1: {
-                text: "Elias desdobrou o mapa e observou enquanto as marcas mudavam, formando lentamente a figura de uma torre solitária cercada por neblina. Ao lado da figura, palavras surgiram: 'Onde o horizonte se dissolve, os segredos aguardam'. Determinando-se a seguir a pista, Elias empacotou o grimório e partiu ao amanhecer. Sua jornada o levou a um vale desolado, onde o ar parecia pesar com uma presença invisível. Ele encontrou a torre – uma estrutura de pedra escura que parecia ter emergido diretamente da terra. No entanto, ao se aproximar, sombras começaram a se mover, formando criaturas etéreas com olhos brilhantes.Elias precisava decidir:",
-                img: "mapa_result.jpg",
-                newChoices: [
-                    // Escolha 1A
-                    "Enfrentar as criaturas diretamente.",
-                    // Escolha 1B
-                    "Tentar enganá-las com um feitiço de ilusão.",
-                    // Escolha 1C
-                    "Recitar as palavras gravadas no grimório."
-                ]
-            },
-            2: {
-                text: "Quando Elias segurou o cristal, foi envolvido por uma luz branca e se viu em um lugar completamente diferente. Árvores com folhas douradas brilhavam sob um céu púrpura, e no centro da clareira havia um templo que parecia feito de ossos. Uma figura encapuzada esperava por ele, sua presença emitindo uma energia quase insuportável. A figura falou, sua voz ecoando como trovões distantes:'Você é o herdeiro? Mostre-me sua coragem ou pereça.'",
-                img: "cristal_result.jpg",
-                newChoices: [
-                    // Escolha 2A
-                    "Entrar no templo sem hesitação.",
-                    // Escolha 2B
-                    "Conversar com a figura e tentar obter mais informações.",
-                    // Escolha 2C
-                    "Usar magia para tentar escapar."
-                ]
-            },
-            3: {
-                text: "A chave parecia vibrar levemente enquanto Elias a segurava. De repente, um ruído grave ressoou pela casa de Rodrick, e o chão começou a rachar, revelando uma escadaria oculta. Ao descer, Elias encontrou uma câmara iluminada por uma luz verde etérea. No centro, havia uma mesa com um diário antigo e um artefato estranho que parecia ser uma combinação de um espelho e uma esfera. No diário, Elias leu:'A chave negra é a conexão entre mundos. Mas cuidado: cada porta exige um preço.' Elias precisava decidir:",
-                img: "chave_result.jpg",
-                newChoices: [
-                    // Escolha 3A
-                    "Usar a chave para ativar o artefato.",
-                    // Escolha 3B
-                    "Continuar lendo o diário em busca de mais pistas.",
-                    // Escolha 3C
-                    "Deixar o local e buscar ajuda."
-                ]
-            }
-        };
+    1: { // escolha 1A Capitulo 1
+        text: "Elias desdobrou o mapa e observou enquanto as marcas mudavam, formando lentamente a figura de uma torre solitária cercada por neblina. Ao lado da figura, palavras surgiram: 'Onde o horizonte se dissolve, os segredos aguardam'. Determinando-se a seguir a pista, Elias empacotou o grimório e partiu ao amanhecer. Sua jornada o levou a um vale desolado, onde o ar parecia pesar com uma presença invisível. Ele encontrou a torre – uma estrutura de pedra escura que parecia ter emergido diretamente da terra. No entanto, ao se aproximar, sombras começaram a se mover, formando criaturas etéreas com olhos brilhantes.Elias precisava decidir:",
+        img: "ImagensC1/mapa queimado.webp",
+        newChoices: ["Enfrentar as criaturas diretamente.", "Tentar enganá-las com um feitiço de ilusão.", "Recitar as palavras gravadas no grimório."],
+
+        1: { // Subescolha 1A Capitulo 2
+            text: "Elias enfrentava a torre solitária cercada por uma névoa opressora. As criaturas que emergiam dela eram altas, com formas humanoides, mas suas extremidades eram indistintas e fluíam como fumaça viva. Os olhos brilhavam como brasas em um fogo sem calor. Elas sussurravam, suas vozes mescladas ao vento frio. Elias sabia que precisava passar por elas para alcançar os segredos guardados na torre. Cada escolha que fazia alterava o curso de seu destino.",
+            img: "ImagensC2/Capítulo2.webp",
+            newChoices: ["Capítulo 2: Segredos da Torre Sombria"],
+
+               1: { // 2 Subescolha 1A Capitulo 2
+                text: "Elias sentiu o calor da raiva crescer em seu peito. 'Vocês não vão me deter!', gritou, erguendo as mãos e conjurando uma esfera de chamas azuis, uma magia que seu mentor dizia ser perigosa até para os magos mais experientes. Com um gesto brusco, lançou o feitiço diretamente contra as criaturas. A magia explodiu, iluminando a névoa e dissipando algumas das sombras, mas algo inesperado aconteceu. As criaturas destruídas liberaram uma fumaça negra que parecia ter vida própria. Ela se enrolou em torno de Elias, infiltrando-se em seus pensamentos e revelando visões de Rodrick sendo cercado por essas mesmas criaturas antes de sua morte. Elias lutou contra a névoa, mas as visões apenas o distraíram. As sombras restantes avançaram, e ele precisou conjurar feitiço após feitiço para se defender. No entanto, sua força mágica começou a se esgotar. Ele viu duas opções diante de si:",
+                img: "ImagensC2/Enfrentar.webp",
+                newChoices: ["Usar o grimório para conjurar um feitiço de sacrifício, mesmo sem saber o preço que isso cobraria.", "Fugir e tentar se reagrupar em segurança."],
+
+                    1: { // 3 Subescolha 1A Capitulo 2
+                        text: "Elias, tomado pela urgência, enfrenta as criaturas diretamente e começa a desvendar os segredos de sua conexão com Rodrick e as sombras.",
+                        img: "ImagensC3/Capítulo3.webp",
+                        newChoices: ["Capítulo 3: O Preço do Poder"],
+
+                            1: { // 4 Subescolha 1A Capitulo 3
+                                text: "Após lançar repetidos feitiços contra as criaturas das sombras, Elias percebe que está perdendo forças rapidamente. O grimório começa a emitir um brilho pulsante, e ele sente uma conexão crescente com os feitiços gravados nele, como se as páginas estivessem se comunicando diretamente com sua mente. Em um momento de desespero, Elias folheia o livro em busca de uma magia mais poderosa. Ele encontra um feitiço de sacrifício que promete 'poder absoluto em troca de parte da alma'. Sem pensar muito, Elias murmura as palavras e sente uma dor lancinante enquanto uma energia negra flui de suas mãos, consumindo completamente as criaturas que o cercam. A fumaça negra que antes o envolvia agora é absorvida por seu corpo, tornando-se parte dele.",
+                                img: "ImagensC3/sacrifício.webp",
+                                newChoices: ["Nova Revelação"],
+
+                                    1: { // 5 Subescolha 1A Capitulo 3
+                                       text:"Ao se recompor, Elias nota que os sussurros não desapareceram. Eles agora vêm de dentro de sua mente, uma mistura de vozes desconhecidas e... Rodrick. Ele ouve uma mensagem clara:'Você tomou meu lugar, Elias. Espero que tenha força para suportar o fardo.' Confuso, Elias continua em direção à torre. Lá, ele encontra uma sala repleta de inscrições detalhando a história de um antigo pacto: Rodrick havia aceitado se tornar o Guardião das Sombras para impedir que um poder maior, conhecido como 'A Sussurradora', consumisse o mundo. Ele percebe que, ao usar o feitiço do sacrifício, ele próprio ativou o processo de sucessão. Agora, Elias está ligado às sombras e aos seus segredos.",
+                                       img: "ImagensC3/Vozes.webp",
+                                       newChoices: ["Aceitar o fardo e abraçar o poder das sombras, protegendo o mundo.", "Rejeitar o legado e tentar destruir as sombras, mesmo que isso ameace o equilíbrio mágico."],
+                                       
+                                         1: { // 6 Subescolha 1A Capitulo 4
+                                            text:"Capítulo 4: Escolhas e Consequências; Elias aceita o papel de Guardião das Sombras. Ele percebe que as sombras não são inerentemente malignas, mas uma força natural que precisa de controle para evitar o caos. Ele usa o grimório para estabilizar o equilíbrio mágico, tornando-se um protetor temido e respeitado. Nos anos que se seguem, Elias torna-se uma figura misteriosa. Magos de todas as partes do mundo passam a procurá-lo em busca de ajuda ou sabedoria, mas ele raramente aparece pessoalmente. A torre sombria, agora sua morada, torna-se um símbolo de esperança para uns e de medo para outros. Elias aprende a dominar completamente as sombras, mas paga o preço da solidão, pois sua conexão com o mundo físico enfraquece com o tempo.",
+                                         },
+
+                                         2: { // 6 Subescolha 1A Capitulo 4
+                                            text:"Enquanto explora a torre, Elias encontra um diário escondido de Rodrick. Nas páginas, descobre que seu mentor havia selado a magia das sombras não para proteger o mundo, mas para controlar e manipular outros magos. Rodrick havia usado seu papel como Guardião para acumular poder, temendo que Elias ou outros pudessem superá-lo um dia. A raiva consome Elias, mas ele decide que o legado de seu mentor não o definirá. Ele volta ao grimório e encontra o feitiço final, um ritual que poderia destruir completamente as sombras, mas a um custo imenso. O ritual exigiria a destruição do próprio grimório, o único elo que Elias tinha com sua magia e com Rodrick. Mesmo assim, ele prossegue, determinado a corrigir os erros de seu mestre. Ao completar o ritual, Elias sente as sombras desaparecerem do mundo. A torre desmorona ao seu redor, e ele emerge como um mago comum, mas livre do peso das sombras. Ele passa a ensinar outros magos a usar a magia de forma responsável, dedicando sua vida a impedir que mais traições como a de Rodrick aconteçam."
+                                         }
+                                    }
+                            }
+                    },
+
+
+                        2: { // 3 Subescolha 1A Capitulo 2
+                        text: "Elias, tomado pela urgência, enfrenta as criaturas diretamente e começa a desvendar os segredos de sua conexão com Rodrick e as sombras.",
+                        img: "ImagensC3/Capítulo3.webp",
+                        newChoices: ["Capítulo 3: O Preço do Poder"],
+
+                        1: { // 4 Subescolha 1A Capitulo 3
+                                text: "Após lançar repetidos feitiços contra as criaturas das sombras, Elias percebe que está perdendo forças rapidamente. O grimório começa a emitir um brilho pulsante, e ele sente uma conexão crescente com os feitiços gravados nele, como se as páginas estivessem se comunicando diretamente com sua mente. Em um momento de desespero, Elias folheia o livro em busca de uma magia mais poderosa. Ele encontra um feitiço de sacrifício que promete 'poder absoluto em troca de parte da alma'. Sem pensar muito, Elias murmura as palavras e sente uma dor lancinante enquanto uma energia negra flui de suas mãos, consumindo completamente as criaturas que o cercam. A fumaça negra que antes o envolvia agora é absorvida por seu corpo, tornando-se parte dele.",
+                                img: "ImagensC3/sacrifício.webp",
+                                newChoices: ["Nova Revelação"],
+
+                                     1:{ // 5 Subescolha 1A Capitulo 3
+                                       text:"Ao se recompor, Elias nota que os sussurros não desapareceram. Eles agora vêm de dentro de sua mente, uma mistura de vozes desconhecidas e... Rodrick. Ele ouve uma mensagem clara:'Você tomou meu lugar, Elias. Espero que tenha força para suportar o fardo.' Confuso, Elias continua em direção à torre. Lá, ele encontra uma sala repleta de inscrições detalhando a história de um antigo pacto: Rodrick havia aceitado se tornar o Guardião das Sombras para impedir que um poder maior, conhecido como 'A Sussurradora', consumisse o mundo. Ele percebe que, ao usar o feitiço do sacrifício, ele próprio ativou o processo de sucessão. Agora, Elias está ligado às sombras e aos seus segredos.",
+                                       img: "ImagensC3/Vozes.webp",
+                                       newChoices: ["Aceitar o fardo e abraçar o poder das sombras, protegendo o mundo.", "Rejeitar o legado e tentar destruir as sombras, mesmo que isso ameace o equilíbrio mágico."],
+                                         
+                                         1: { // 6 Subescolha 1A Capitulo 4
+                                            text:"Capítulo 4: Escolhas e Consequências; Elias aceita o papel de Guardião das Sombras. Ele percebe que as sombras não são inerentemente malignas, mas uma força natural que precisa de controle para evitar o caos. Ele usa o grimório para estabilizar o equilíbrio mágico, tornando-se um protetor temido e respeitado. Nos anos que se seguem, Elias torna-se uma figura misteriosa. Magos de todas as partes do mundo passam a procurá-lo em busca de ajuda ou sabedoria, mas ele raramente aparece pessoalmente. A torre sombria, agora sua morada, torna-se um símbolo de esperança para uns e de medo para outros. Elias aprende a dominar completamente as sombras, mas paga o preço da solidão, pois sua conexão com o mundo físico enfraquece com o tempo.",
+                                         },
+
+                                         2: { // 6 Subescolha 1A Capitulo 4
+                                            text:"Enquanto explora a torre, Elias encontra um diário escondido de Rodrick. Nas páginas, descobre que seu mentor havia selado a magia das sombras não para proteger o mundo, mas para controlar e manipular outros magos. Rodrick havia usado seu papel como Guardião para acumular poder, temendo que Elias ou outros pudessem superá-lo um dia. A raiva consome Elias, mas ele decide que o legado de seu mentor não o definirá. Ele volta ao grimório e encontra o feitiço final, um ritual que poderia destruir completamente as sombras, mas a um custo imenso. O ritual exigiria a destruição do próprio grimório, o único elo que Elias tinha com sua magia e com Rodrick. Mesmo assim, ele prossegue, determinado a corrigir os erros de seu mestre. Ao completar o ritual, Elias sente as sombras desaparecerem do mundo. A torre desmorona ao seu redor, e ele emerge como um mago comum, mas livre do peso das sombras. Ele passa a ensinar outros magos a usar a magia de forma responsável, dedicando sua vida a impedir que mais traições como a de Rodrick aconteçam."
+                                         }
+                                    }
+                            }
+                    },
+
+                }
+        },
+
+
+
+
+
+
+
+
+        2: { // Subescolha 1B Capitulo 2
+            text: "Elias enfrentava a torre solitária cercada por uma névoa opressora. As criaturas que emergiam dela eram altas, com formas humanoides, mas suas extremidades eram indistintas e fluíam como fumaça viva. Os olhos brilhavam como brasas em um fogo sem calor. Elas sussurravam, suas vozes mescladas ao vento frio. Elias sabia que precisava passar por elas para alcançar os segredos guardados na torre. Cada escolha que fazia alterava o curso de seu destino.",
+            img: "ImagensC2/Capítulo2.webp",
+            newChoices: ["Capítulo 2: Segredos da Torre Sombria"],
+
+                1:{ // 2 Subescolha 1B Capitulo 2
+                text: "Elias sabia que enfrentá-las diretamente seria suicídio. Em vez disso, fechou os olhos e murmurou uma fórmula que Rodrick lhe ensinara, criando uma duplicata ilusória de si mesmo. A duplicata surgiu alguns metros à frente, movendo-se de forma convincente em direção às criaturas. As sombras hesitaram, fixando seus olhos flamejantes na ilusão, que parecia tão real que até o som de seus passos era audível. Elias aproveitou a distração para avançar furtivamente em direção à torre. Mas, ao cruzar a entrada, um rugido ecoou pela estrutura. As criaturas perceberam o engano e começaram a persegui-lo, atravessando as paredes da torre como se fossem feitas de ar. Dentro da torre, Elias encontrou um pedestal com um artefato luminoso. Era um orbe de vidro que parecia conter uma tempestade em miniatura. Uma inscrição ao lado dizia:'O Orbe das Verdades: Revela tudo, mas consome o que você teme perder.'",
+                img: "ImagensC2/Ilução.webp",
+                newChoices: ["Usar o orbe imediatamente para revelar os segredos da torre.", "Esconder-se e tentar preparar uma armadilha para as criaturas.", "Fugir mais profundamente na torre e explorar seus outros níveis."],
+
+                     1: { // 3 Subescolha 1B Capitulo 3
+                        text:"Elias evita um confronto direto com as criaturas das sombras usando astúcia, criando uma ilusão para distraí-las enquanto avança para a torre. Isso o leva a descobrir segredos profundos sobre o poder das sombras e seu próprio papel no destino desse poder.",
+                         img: "ImagensC3/RevelarSegredos.webp",
+                         newChoices: ["Capítulo 3: O Orbe das Verdades"],
+
+                             1: { // 4 Subescolha 1B Capitulo 3
+                                text:"Dentro da torre, Elias encontra um salão repleto de inscrições arcanas. No centro, um pedestal de pedra segura o Orbe das Verdades, um artefato que parece pulsar com uma energia viva. A superfície do orbe exibe relâmpagos que se movem como serpentes. Ao lado do pedestal, uma inscrição gravada diz: 'A verdade revela o poder, mas também o preço.' Elias sente as criaturas se aproximando rapidamente. Ele sabe que o tempo é curto e precisa tomar uma decisão:",
+                                img: "ImagensC3/aprenderPoder.webp",
+                                newChoices: ["Usar o Orbe para desvendar a verdade sobre as sombras e seu papel.", "Esconder-se e preparar uma emboscada para as criaturas.", "Explorar os níveis mais profundos da torre em busca de respostas alternativas."],
+                                 
+                                 1: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide usar o Orbe, colocando as mãos sobre sua superfície. Imediatamente, ele é consumido por visões: Ele vê Rodrick enfrentando as criaturas das sombras e, por fim, fazendo um pacto com elas. Descobre que o poder das sombras é um equilíbrio necessário para impedir que forças destrutivas mais caóticas, como 'A Sussurradora', se libertem. Elias percebe que Rodrick estava enfraquecido, e sua morte abriu um vazio que agora precisa ser preenchido por alguém com força suficiente para conter as sombras. O Orbe oferece a Elias o mesmo pacto que Rodrick aceitou: tornar-se o Guardião das Sombras. Apesar do medo e da incerteza, Elias aceita, sentindo o poder das sombras fluírem por seu corpo. Ele destrói as criaturas restantes com um simples gesto e assume o papel de Guardião, dedicando-se a proteger o equilíbrio mágico. No entanto, ele percebe que esse poder o isola do mundo, assim como isolou Rodrick.",
+                                    img: "ImagensC3/UsarOrbe.webp",
+                                 },
+
+                                 2: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide esconder-se e preparar uma emboscada para as criaturas. Enquanto examina o salão em busca de pistas para uma estratégia, ele encontra um diário escondido atrás do pedestal. Nas páginas amareladas, ele descobre uma verdade perturbadora: Rodrick não era o herói que ele imaginava. Ele usou as sombras para obter poder pessoal e controlava a magia sob o pretexto de protegê-la. O pacto não era um sacrifício altruísta, mas uma barganha para assegurar sua supremacia. Chocado e enfurecido, Elias percebe que as sombras são um perigo constante para o equilíbrio do mundo. Ele decide que a única solução é destruí-las completamente. Usando os feitiços gravados no grimório e o poder do Orbe, Elias cria um ritual devastador que consome a torre e as sombras em uma explosão de luz. Embora triunfante, Elias sente o peso da responsabilidade. Ele destruiu as sombras, mas também eliminou o equilíbrio mágico que elas proporcionavam. Agora, ele dedica sua vida a ensinar outros magos a manterem o equilíbrio por meios diferentes, assegurando que o legado de Rodrick jamais se repita.",
+                                    img: "ImagensC3/emboscada.webp",
+                                 },
+
+                                 3: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide explorar os níveis mais profundos da torre, ignorando o Orbe. Ele encontra uma câmara subterrânea onde uma estátua de Rodrick está cercada por runas brilhantes. Enquanto tenta decifrar as inscrições, as sombras invadem a sala e cercam Elias. Em um momento de desespero, ele sente uma voz em sua mente, oferecendo ajuda. É 'A Sussurradora', a entidade que Rodrick selou com o pacto das sombras. A voz promete a Elias o poder necessário para superar as criaturas e todos os obstáculos que enfrentará. Ele hesita, mas, com as sombras avançando, aceita o acordo. Uma explosão de energia negra irrompe de seu corpo, destruindo as criaturas. No entanto, Elias percebe que algo mudou dentro dele. Ele não apenas venceu as sombras – ele tornou-se uma com elas. A voz da Sussurradora agora o guia, e ele sente um desejo crescente por mais poder. Elias emerge da torre transformado, uma figura envolta em sombras vivas, com um olhar que inspira tanto fascínio quanto terror. Ele não busca mais proteger ou destruir – apenas dominar. A partir desse momento, Elias inicia uma campanha para subjugar outros magos e tornar-se um tirano temido em todo o mundo.",
+                                    img: "ImagensC3/Explorar.webp"
+                                 }
+                             }
+                     },
+
+                     2: { // 3 Subescolha 1B Capitulo 3
+                        text:"Elias evita um confronto direto com as criaturas das sombras usando astúcia, criando uma emboscada para derrota-los enquanto avança para a torre. Isso o leva a descobrir segredos profundos sobre o poder das sombras e seu próprio papel no destino desse poder.",
+                         img: "ImagensC2/esconderArmadilha.webp",
+                         newChoices: ["Capítulo 3: O Orbe das Verdades"],
+
+                         1: { // 4 Subescolha 1B Capitulo 3
+                            text:"Dentro da torre, Elias encontra um salão repleto de inscrições arcanas. No centro, um pedestal de pedra segura o Orbe das Verdades, um artefato que parece pulsar com uma energia viva. A superfície do orbe exibe relâmpagos que se movem como serpentes. Ao lado do pedestal, uma inscrição gravada diz: 'A verdade revela o poder, mas também o preço.' Elias sente as criaturas se aproximando rapidamente. Ele sabe que o tempo é curto e precisa tomar uma decisão:",
+                            img: "ImagensC3/aprenderPoder.webp",
+                            newChoices: ["Usar o Orbe para desvendar a verdade sobre as sombras e seu papel.", "Esconder-se e preparar uma emboscada para as criaturas.", "Explorar os níveis mais profundos da torre em busca de respostas alternativas."],
+                                 
+                                 1: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide usar o Orbe, colocando as mãos sobre sua superfície. Imediatamente, ele é consumido por visões: Ele vê Rodrick enfrentando as criaturas das sombras e, por fim, fazendo um pacto com elas. Descobre que o poder das sombras é um equilíbrio necessário para impedir que forças destrutivas mais caóticas, como 'A Sussurradora', se libertem. Elias percebe que Rodrick estava enfraquecido, e sua morte abriu um vazio que agora precisa ser preenchido por alguém com força suficiente para conter as sombras. O Orbe oferece a Elias o mesmo pacto que Rodrick aceitou: tornar-se o Guardião das Sombras. Apesar do medo e da incerteza, Elias aceita, sentindo o poder das sombras fluírem por seu corpo. Ele destrói as criaturas restantes com um simples gesto e assume o papel de Guardião, dedicando-se a proteger o equilíbrio mágico. No entanto, ele percebe que esse poder o isola do mundo, assim como isolou Rodrick.",
+                                    img: "ImagensC3/UsarOrbe.webp",
+                                 },
+
+                                 2: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide esconder-se e preparar uma emboscada para as criaturas. Enquanto examina o salão em busca de pistas para uma estratégia, ele encontra um diário escondido atrás do pedestal. Nas páginas amareladas, ele descobre uma verdade perturbadora: Rodrick não era o herói que ele imaginava. Ele usou as sombras para obter poder pessoal e controlava a magia sob o pretexto de protegê-la. O pacto não era um sacrifício altruísta, mas uma barganha para assegurar sua supremacia. Chocado e enfurecido, Elias percebe que as sombras são um perigo constante para o equilíbrio do mundo. Ele decide que a única solução é destruí-las completamente. Usando os feitiços gravados no grimório e o poder do Orbe, Elias cria um ritual devastador que consome a torre e as sombras em uma explosão de luz. Embora triunfante, Elias sente o peso da responsabilidade. Ele destruiu as sombras, mas também eliminou o equilíbrio mágico que elas proporcionavam. Agora, ele dedica sua vida a ensinar outros magos a manterem o equilíbrio por meios diferentes, assegurando que o legado de Rodrick jamais se repita.",
+                                    img: "ImagensC3/emboscada.webp",
+                                 },
+
+                                 3: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide explorar os níveis mais profundos da torre, ignorando o Orbe. Ele encontra uma câmara subterrânea onde uma estátua de Rodrick está cercada por runas brilhantes. Enquanto tenta decifrar as inscrições, as sombras invadem a sala e cercam Elias. Em um momento de desespero, ele sente uma voz em sua mente, oferecendo ajuda. É 'A Sussurradora', a entidade que Rodrick selou com o pacto das sombras. A voz promete a Elias o poder necessário para superar as criaturas e todos os obstáculos que enfrentará. Ele hesita, mas, com as sombras avançando, aceita o acordo. Uma explosão de energia negra irrompe de seu corpo, destruindo as criaturas. No entanto, Elias percebe que algo mudou dentro dele. Ele não apenas venceu as sombras – ele tornou-se uma com elas. A voz da Sussurradora agora o guia, e ele sente um desejo crescente por mais poder. Elias emerge da torre transformado, uma figura envolta em sombras vivas, com um olhar que inspira tanto fascínio quanto terror. Ele não busca mais proteger ou destruir – apenas dominar. A partir desse momento, Elias inicia uma campanha para subjugar outros magos e tornar-se um tirano temido em todo o mundo.",
+                                    img: "ImagensC3/Explorar.webp"
+                                 }
+                             }
+                     },
+
+                     3: { // 3 Subescolha 1B Capitulo 3
+                        text:"Elias fugir mais profundamente na torre e explorar seus outros níveis. Ao chegar na metade da torre, o orbe de vidro que Elias encontrou é ativado. Um grito de terror surge de dentro do orbe, e as criaturas das sombras se aproximam rapidamente. Elias luta com as criaturas das sombras, tentando evitar que o orbe devidamente revela os segredos da torre.",
+                         img: "ImagensC2/fugir.webp",
+                         newChoices: ["Capítulo 3: O Orbe das Verdades"],
+
+                         1: { // 4 Subescolha 1B Capitulo 3
+                            text:"Dentro da torre, Elias encontra um salão repleto de inscrições arcanas. No centro, um pedestal de pedra segura o Orbe das Verdades, um artefato que parece pulsar com uma energia viva. A superfície do orbe exibe relâmpagos que se movem como serpentes. Ao lado do pedestal, uma inscrição gravada diz: 'A verdade revela o poder, mas também o preço.' Elias sente as criaturas se aproximando rapidamente. Ele sabe que o tempo é curto e precisa tomar uma decisão:",
+                            img: "ImagensC3/aprenderPoder.webp",
+                            newChoices: ["Usar o Orbe para desvendar a verdade sobre as sombras e seu papel.", "Esconder-se e preparar uma emboscada para as criaturas.", "Explorar os níveis mais profundos da torre em busca de respostas alternativas."],
+                                 
+                                 1: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide usar o Orbe, colocando as mãos sobre sua superfície. Imediatamente, ele é consumido por visões: Ele vê Rodrick enfrentando as criaturas das sombras e, por fim, fazendo um pacto com elas. Descobre que o poder das sombras é um equilíbrio necessário para impedir que forças destrutivas mais caóticas, como 'A Sussurradora', se libertem. Elias percebe que Rodrick estava enfraquecido, e sua morte abriu um vazio que agora precisa ser preenchido por alguém com força suficiente para conter as sombras. O Orbe oferece a Elias o mesmo pacto que Rodrick aceitou: tornar-se o Guardião das Sombras. Apesar do medo e da incerteza, Elias aceita, sentindo o poder das sombras fluírem por seu corpo. Ele destrói as criaturas restantes com um simples gesto e assume o papel de Guardião, dedicando-se a proteger o equilíbrio mágico. No entanto, ele percebe que esse poder o isola do mundo, assim como isolou Rodrick.",
+                                    img: "ImagensC3/UsarOrbe.webp",
+                                 },
+
+                                 2: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide esconder-se e preparar uma emboscada para as criaturas. Enquanto examina o salão em busca de pistas para uma estratégia, ele encontra um diário escondido atrás do pedestal. Nas páginas amareladas, ele descobre uma verdade perturbadora: Rodrick não era o herói que ele imaginava. Ele usou as sombras para obter poder pessoal e controlava a magia sob o pretexto de protegê-la. O pacto não era um sacrifício altruísta, mas uma barganha para assegurar sua supremacia. Chocado e enfurecido, Elias percebe que as sombras são um perigo constante para o equilíbrio do mundo. Ele decide que a única solução é destruí-las completamente. Usando os feitiços gravados no grimório e o poder do Orbe, Elias cria um ritual devastador que consome a torre e as sombras em uma explosão de luz. Embora triunfante, Elias sente o peso da responsabilidade. Ele destruiu as sombras, mas também eliminou o equilíbrio mágico que elas proporcionavam. Agora, ele dedica sua vida a ensinar outros magos a manterem o equilíbrio por meios diferentes, assegurando que o legado de Rodrick jamais se repita.",
+                                    img: "ImagensC3/emboscada.webp",
+                                 },
+
+                                 3: { // 5 Subescolha 1B Capitulo 3
+                                    text:"Elias decide explorar os níveis mais profundos da torre, ignorando o Orbe. Ele encontra uma câmara subterrânea onde uma estátua de Rodrick está cercada por runas brilhantes. Enquanto tenta decifrar as inscrições, as sombras invadem a sala e cercam Elias. Em um momento de desespero, ele sente uma voz em sua mente, oferecendo ajuda. É 'A Sussurradora', a entidade que Rodrick selou com o pacto das sombras. A voz promete a Elias o poder necessário para superar as criaturas e todos os obstáculos que enfrentará. Ele hesita, mas, com as sombras avançando, aceita o acordo. Uma explosão de energia negra irrompe de seu corpo, destruindo as criaturas. No entanto, Elias percebe que algo mudou dentro dele. Ele não apenas venceu as sombras – ele tornou-se uma com elas. A voz da Sussurradora agora o guia, e ele sente um desejo crescente por mais poder. Elias emerge da torre transformado, uma figura envolta em sombras vivas, com um olhar que inspira tanto fascínio quanto terror. Ele não busca mais proteger ou destruir – apenas dominar. A partir desse momento, Elias inicia uma campanha para subjugar outros magos e tornar-se um tirano temido em todo o mundo.",
+                                    img:"ImagensC3/Explorar.webp"
+                                 }
+                            }
+                     }
+                }
+        },
+
+        3: { // Subescolha 1C Capitulo 2
+            text: "Elias enfrentava a torre solitária cercada por uma névoa opressora. As criaturas que emergiam dela eram altas, com formas humanoides, mas suas extremidades eram indistintas e fluíam como fumaça viva. Os olhos brilhavam como brasas em um fogo sem calor. Elas sussurravam, suas vozes mescladas ao vento frio. Elias sabia que precisava passar por elas para alcançar os segredos guardados na torre. Cada escolha que fazia alterava o curso de seu destino.",
+            img: "ImagensC2/Capítulo2.webp",
+            newChoices: ["Capítulo 2: Segredos da Torre Sombria"],
+
+                1: { // 2 Subescolha 1C Capitulo 2
+                text: "Elias abriu o grimório com pressa e encontrou as palavras que brilhavam em tinta dourada. Ele recitou em voz alta: 'Sombriis invocara lumen perditum.' Um clarão de luz surgiu de suas mãos, como um raio que rasgava a névoa. As criaturas recuaram com gritos distorcidos, como se a luz fosse um veneno para elas. Elias sentiu a magia queimar em seu peito enquanto a névoa parecia abrir caminho, revelando uma passagem oculta sob a torre. A passagem levava a uma câmara subterrânea onde um trono negro estava entalhado diretamente na rocha. Sentado nele, estava uma figura indistinta, envolta em sombras que pareciam vivas. A voz reverberou: 'Você ousa invocar a luz na presença do Guardião? Responda, jovem tolo: Por que veio perturbar meu domínio?'",
+                img: "ImagensC2/recitar.webp",
+                newChoices: ["Responder com ousadia, afirmando que busca os segredos do grimório.", "Ficar em silêncio e esperar que o Guardião diga mais.", "Tentar usar a luz novamente para atacar o Guardião."],
+
+                     1: { // 3 Subescolha 1C Capitulo 3
+                        text:"Respondo com determinação e ousadia, afirmando com convicção que minha jornada é guiada pelo desejo de desvendar os mistérios e segredos profundos contidos no grimório, explorando cada detalhe com dedicação e coragem.",
+                        img: "ImagensC3/Capítulo3.webp",
+                        newChoices: ["Capítulo 3: O Guardião das Sombras"],
+
+                         1: { // 4 Subescolha 1C Capitulo 3
+                            text: "A luz conjurada por Elias a partir do feitiço iluminou a névoa, dissipando as criaturas em gritos angustiados. Ao mesmo tempo, uma passagem foi revelada sob a torre, levando a uma câmara subterrânea. No centro da sala, Elias encontrou um trono negro entalhado na pedra, envolto por uma energia pulsante. Sentado no trono estava uma figura indistinta, coberta por um manto de sombras. O Guardião das Sombras original, um ser com olhos como brasas, olhou diretamente para Elias e disse: 'Você usou as palavras do grimório e invocou minha atenção. Agora, deve escolher: tomar meu lugar, destruir este poder ou ser consumido por ele.' Elias sentiu o peso das palavras e o poder envolvente da sala. As sombras pareciam sussurrar promessas e ameaças ao mesmo tempo. Ele percebeu que suas ações não apenas definiriam seu destino, mas também o futuro do equilíbrio mágico no mundo.",
+                            img: "",
+                            newChoices: ["Tomar seu lugar", "destruir-lo", "Absolver o poder"],
+                             
+                             1: { // 5 Subescolha 1C Capitulo 3
+                                text:"Elias, tomado pela compreensão do que significava ser o Guardião, percebe que o poder das sombras é necessário para manter o equilíbrio entre as forças mágicas. Ele aceita o papel, sabendo que isso o afastará do mundo que conhece. O Guardião sorri de forma sombria antes de desaparecer, deixando o poder fluir para Elias. Ele sente as sombras penetrarem em sua alma, conectando-o à essência da magia antiga. Elias deixa a câmara com uma nova determinação e retorna à superfície como o Guardião das Sombras, uma figura misteriosa que trabalha nas sombras para manter a ordem. Embora o mundo permaneça seguro, Elias paga o preço de sua humanidade: ele se torna distante, temido e solitário, vivendo entre as sombras que jurou proteger.",
+                                img: "",
+                             },
+
+                             2: { // 5 Subescolha 1C Capitulo 3
+                                text: "Ao ouvir as palavras do Guardião, Elias hesita e examina mais profundamente os símbolos gravados ao redor da câmara. Ele encontra inscrições que detalham o passado de Rodrick e o pacto que ele fez com as sombras. Elias descobre que Rodrick não era o herói que parecia: ele usou o poder das sombras para obter vantagens políticas e controlar outros magos, disfarçando sua ambição como sacrifício. Indignado, Elias confronta o Guardião e declara: 'Eu não seguirei o mesmo caminho de Rodrick. Não permitirei que mais ninguém seja escravizado por este poder.' O Guardião ri, dizendo: 'Então destrua-o, tolo. Mas saiba que o equilíbrio será quebrado.' Elias usa o grimório para conjurar um feitiço final que destrói o trono e o poder das sombras. A câmara começa a desmoronar, e Elias escapa por pouco, vendo a torre ser consumida por uma luz brilhante. Ele retorna ao mundo determinado a ensinar os magos a evitar o poder corruptor das sombras e a trilhar um novo caminho.",
+                                img: "",
+                             },
+
+                             3: { // 5 Subescolha 1C Capitulo 3
+                                text:"A tentação do poder é forte demais para Elias resistir. Ele se aproxima do trono e sente as sombras fluírem por seu corpo como um rio interminável. A voz do Guardião ecoa: 'Eu fui o primeiro, mas você será o maior. Tome o poder e deixe-o guiá-lo.' Elias, tomado pela ambição e pelo desejo de nunca mais ser fraco, aceita o poder sem questionar. À medida que as sombras o consomem, ele sente sua mente mudar. Não há mais um Guardião, mas um novo soberano das sombras – Elias, a quem as criaturas obedecem sem questionar. Ele emerge da torre como um ser de pura escuridão, determinado a expandir seu domínio. O mundo agora teme a força avassaladora de Elias, que se torna uma figura de lenda e terror.",
+                                img: "",
+                             }
+                         }
+                     },
+
+                     2: { // 3 Subescolha 1C Capitulo 3
+                        text: "........",
+                        img: "",
+                        newChoices: ["Capítulo 3: O Guardião das Sombras"],
+
+                        1: { // 3 Subescolha 1C Capitulo 3
+                            text: "A luz conjurada por Elias a partir do feitiço iluminou a névoa, dissipando as criaturas em gritos angustiados. Ao mesmo tempo, uma passagem foi revelada sob a torre, levando a uma câmara subterrânea. No centro da sala, Elias encontrou um trono negro entalhado na pedra, envolto por uma energia pulsante. Sentado no trono estava uma figura indistinta, coberta por um manto de sombras. O Guardião das Sombras original, um ser com olhos como brasas, olhou diretamente para Elias e disse: 'Você usou as palavras do grimório e invocou minha atenção. Agora, deve escolher: tomar meu lugar, destruir este poder ou ser consumido por ele.' Elias sentiu o peso das palavras e o poder envolvente da sala. As sombras pareciam sussurrar promessas e ameaças ao mesmo tempo. Ele percebeu que suas ações não apenas definiriam seu destino, mas também o futuro do equilíbrio mágico no mundo.",
+                            img: "",
+                            newChoices: ["Tomar seu lugar", "destruir-lo", "Absolver o poder"],
+                             
+                             1: { // 5 Subescolha 1C Capitulo 3
+                                text:"Elias, tomado pela compreensão do que significava ser o Guardião, percebe que o poder das sombras é necessário para manter o equilíbrio entre as forças mágicas. Ele aceita o papel, sabendo que isso o afastará do mundo que conhece. O Guardião sorri de forma sombria antes de desaparecer, deixando o poder fluir para Elias. Ele sente as sombras penetrarem em sua alma, conectando-o à essência da magia antiga. Elias deixa a câmara com uma nova determinação e retorna à superfície como o Guardião das Sombras, uma figura misteriosa que trabalha nas sombras para manter a ordem. Embora o mundo permaneça seguro, Elias paga o preço de sua humanidade: ele se torna distante, temido e solitário, vivendo entre as sombras que jurou proteger.",
+                                img: "",
+                             },
+
+                             2: { // 5 Subescolha 1C Capitulo 3
+                                text: "Ao ouvir as palavras do Guardião, Elias hesita e examina mais profundamente os símbolos gravados ao redor da câmara. Ele encontra inscrições que detalham o passado de Rodrick e o pacto que ele fez com as sombras. Elias descobre que Rodrick não era o herói que parecia: ele usou o poder das sombras para obter vantagens políticas e controlar outros magos, disfarçando sua ambição como sacrifício. Indignado, Elias confronta o Guardião e declara: 'Eu não seguirei o mesmo caminho de Rodrick. Não permitirei que mais ninguém seja escravizado por este poder.' O Guardião ri, dizendo: 'Então destrua-o, tolo. Mas saiba que o equilíbrio será quebrado.' Elias usa o grimório para conjurar um feitiço final que destrói o trono e o poder das sombras. A câmara começa a desmoronar, e Elias escapa por pouco, vendo a torre ser consumida por uma luz brilhante. Ele retorna ao mundo determinado a ensinar os magos a evitar o poder corruptor das sombras e a trilhar um novo caminho.",
+                                img: "",
+                             },
+
+                             3: { // 5 Subescolha 1C Capitulo 3
+                                text:"A tentação do poder é forte demais para Elias resistir. Ele se aproxima do trono e sente as sombras fluírem por seu corpo como um rio interminável. A voz do Guardião ecoa: 'Eu fui o primeiro, mas você será o maior. Tome o poder e deixe-o guiá-lo.' Elias, tomado pela ambição e pelo desejo de nunca mais ser fraco, aceita o poder sem questionar. À medida que as sombras o consomem, ele sente sua mente mudar. Não há mais um Guardião, mas um novo soberano das sombras – Elias, a quem as criaturas obedecem sem questionar. Ele emerge da torre como um ser de pura escuridão, determinado a expandir seu domínio. O mundo agora teme a força avassaladora de Elias, que se torna uma figura de lenda e terror.",
+                                img: "",
+                             }
+                         }
+                     },
+
+                     3:{ // 3 Subescolha 1C Capitulo 3
+                        text:"Elias recita as palavras místicas do grimório, utilizando um feitiço poderoso para dissipar as criaturas das sombras e abrir caminho para segredos ocultos. Esse ato conecta Elias diretamente ao Guardião original das Sombras, revelando que o poder do grimório não apenas dá acesso às sombras, mas também exige escolhas profundas que definem o destino do mundo.",
+                        img: "",
+                        newChoices: ["Capítulo 3: O Guardião das Sombras"],
+
+                        1: { // 4 Subescolha 1C Capitulo 3
+                            text: "A luz conjurada por Elias a partir do feitiço iluminou a névoa, dissipando as criaturas em gritos angustiados. Ao mesmo tempo, uma passagem foi revelada sob a torre, levando a uma câmara subterrânea. No centro da sala, Elias encontrou um trono negro entalhado na pedra, envolto por uma energia pulsante. Sentado no trono estava uma figura indistinta, coberta por um manto de sombras. O Guardião das Sombras original, um ser com olhos como brasas, olhou diretamente para Elias e disse: 'Você usou as palavras do grimório e invocou minha atenção. Agora, deve escolher: tomar meu lugar, destruir este poder ou ser consumido por ele.' Elias sentiu o peso das palavras e o poder envolvente da sala. As sombras pareciam sussurrar promessas e ameaças ao mesmo tempo. Ele percebeu que suas ações não apenas definiriam seu destino, mas também o futuro do equilíbrio mágico no mundo.",
+                            img: "",
+                            newChoices: ["Tomar seu lugar", "destruir-lo", "Absolver o poder"],
+                             
+                             1: { // 5 Subescolha 1C Capitulo 3
+                                text:"Elias, tomado pela compreensão do que significava ser o Guardião, percebe que o poder das sombras é necessário para manter o equilíbrio entre as forças mágicas. Ele aceita o papel, sabendo que isso o afastará do mundo que conhece. O Guardião sorri de forma sombria antes de desaparecer, deixando o poder fluir para Elias. Ele sente as sombras penetrarem em sua alma, conectando-o à essência da magia antiga. Elias deixa a câmara com uma nova determinação e retorna à superfície como o Guardião das Sombras, uma figura misteriosa que trabalha nas sombras para manter a ordem. Embora o mundo permaneça seguro, Elias paga o preço de sua humanidade: ele se torna distante, temido e solitário, vivendo entre as sombras que jurou proteger.",
+                                img: "",
+                             },
+
+                             2: { // 5 Subescolha 1C Capitulo 3
+                                text: "Ao ouvir as palavras do Guardião, Elias hesita e examina mais profundamente os símbolos gravados ao redor da câmara. Ele encontra inscrições que detalham o passado de Rodrick e o pacto que ele fez com as sombras. Elias descobre que Rodrick não era o herói que parecia: ele usou o poder das sombras para obter vantagens políticas e controlar outros magos, disfarçando sua ambição como sacrifício. Indignado, Elias confronta o Guardião e declara: 'Eu não seguirei o mesmo caminho de Rodrick. Não permitirei que mais ninguém seja escravizado por este poder.' O Guardião ri, dizendo: 'Então destrua-o, tolo. Mas saiba que o equilíbrio será quebrado.' Elias usa o grimório para conjurar um feitiço final que destrói o trono e o poder das sombras. A câmara começa a desmoronar, e Elias escapa por pouco, vendo a torre ser consumida por uma luz brilhante. Ele retorna ao mundo determinado a ensinar os magos a evitar o poder corruptor das sombras e a trilhar um novo caminho.",
+                                img: "",
+                             },
+
+                             3: { // 5 Subescolha 1C Capitulo 3
+                                text:"A tentação do poder é forte demais para Elias resistir. Ele se aproxima do trono e sente as sombras fluírem por seu corpo como um rio interminável. A voz do Guardião ecoa: 'Eu fui o primeiro, mas você será o maior. Tome o poder e deixe-o guiá-lo.' Elias, tomado pela ambição e pelo desejo de nunca mais ser fraco, aceita o poder sem questionar. À medida que as sombras o consomem, ele sente sua mente mudar. Não há mais um Guardião, mas um novo soberano das sombras – Elias, a quem as criaturas obedecem sem questionar. Ele emerge da torre como um ser de pura escuridão, determinado a expandir seu domínio. O mundo agora teme a força avassaladora de Elias, que se torna uma figura de lenda e terror.",
+                                img: "",
+                             }
+                         }
+                     }
+                }
+        }
+    },
+
+
+
+// =============================================================================================================================
+
+
+
+    2: { // escolha 1A Capitulo 1
+        text: "Texto inicial para o cristal cintilante...",
+        img: "imagensC1/Cristal Cintilante.webp",
+        newChoices: ["Entrar no templo sem hesitação.", "Conversar com a figura e tentar obter mais informações.", "Usar magia para tentar escapar."],
+
+        // Subescolhas 2A, 2B, 2C adicionadas aqui
+        1: {
+            text: "Entrando no templo, você encontra uma grande sala...",
+            img: "sala_templo.jpg",
+            newChoices: ["Conseguir um lugar seguro para descansar.", "Encontrar um enigma que possa ajudar.", "Continuar explorando o templo."]
+        },
+        2: {
+            text: "Você encontra um diário com escritas gravadas...",
+            img: "diario_result.jpg",
+            newChoices: ["Ler as escritas para tentar descobrir o que aconteceu.", "Ignorar as escritas e continuar explorando o templo."]
+        },
+        3: {
+            text: "Você encontra um artefato mágico...",
+            img: "artefato_result.jpg",
+            newChoices: ["Usar o artefato para curar um mal.", "Continuar explorando o templo."]
+        }
+    },
+
+
+// =============================================================================================================================
+
+
+
+    3: { // escolha 1A Capitulo 1
+        text: "Texto inicial para a chave negra...",
+        img: "chave_result.jpg",
+        newChoices: ["Usar a chave para ativar o artefato.", "Continuar lendo o diário em busca de mais pistas.", "Deixar o local e buscar ajuda."],
+
+        // Subescolhas 3A, 3B, 3C adicionadas aqui
+    }
+};
+
+
+// =============================================================================================================================
+
+
 
         // Processa a escolha
         function selectChoice(choice) {
-            const choiceResult = results[choice];
-            const leftPage = document.getElementById('story-left');
-            const rightPage = document.getElementById('story-right');
-            
-            // Atualiza o lado esquerdo com o texto e imagem da escolha
-            leftPage.innerHTML = `
-                <p>${choiceResult.text}</p>
-                <img src="${choiceResult.img}" alt="Resultado" class="result-image">
-            `;
-            
-            // Atualiza o lado direito com novas escolhas
-            rightPage.innerHTML = choiceResult.newChoices.map((choiceText, index) => `
-                <button onclick="selectChoice(${choice}${index + 1})">${choiceText}</button>
-            `).join('');
-        }
+    let choiceResult = results;
+    const choicePath = choice.toString().split(''); // Divide o identificador da escolha
+    choicePath.forEach(part => { choiceResult = choiceResult[part]; }); // Acessa o nível correto no objeto
+
+    const leftPage = document.getElementById('story-left');
+    const rightPage = document.getElementById('story-right');
+    
+    // Atualiza o lado esquerdo com o texto e imagem
+    leftPage.innerHTML = `
+        <p>${choiceResult.text}</p>
+        <img src="${choiceResult.img}" alt="Resultado" class="result-image">
+    `;
+    
+    // Atualiza o lado direito com as novas opções
+    if (choiceResult.newChoices) {
+        rightPage.innerHTML = choiceResult.newChoices.map((choiceText, index) => `
+            <button onclick="selectChoice(${choice}${index + 1})">${choiceText}</button>
+        `).join('');
+    } else {
+        rightPage.innerHTML = `<p>Fim desta linha de história.</p>`;
+    }
+}
+
     </script>
 </body>
 </html>
