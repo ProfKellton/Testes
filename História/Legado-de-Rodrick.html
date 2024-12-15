@@ -201,6 +201,8 @@
     </div>
 
     <audio id="page-flip-sound" src="Sons/paper-turn-40077 (mp3cut.net).mp3"></audio>
+    <audio id="background-music" src="Sons/medieval-ambient-236809.mp3" loop></audio>
+
 
     <script>
         // Alterna entre as seções
@@ -222,6 +224,69 @@
                 book.classList.remove('flip');
             }, 1000);
         }
+
+        function playPageFlipSound() {
+    const audio = document.getElementById('page-flip-sound');
+    if (audio) {
+        audio.currentTime = 0; // Reinicia o áudio para tocar desde o início
+        audio.play();
+    }
+    }
+
+    // Atualize todas as chamadas onde o som deve ser reproduzido:
+    function showSection(sectionId) {
+    document.querySelectorAll('.container > div').forEach(section => {
+        section.classList.remove('visible');
+    });
+    document.getElementById(sectionId).classList.add('visible');
+    }
+
+    // Vincula o som ao clique nos botões:
+    document.addEventListener('click', (event) => {
+    const target = event.target;
+
+    // Reproduz o som apenas para botões relevantes
+    if (target.tagName === 'BUTTON' || target.tagName === 'A') {
+        playPageFlipSound();
+    }
+    });
+
+    // Modifique a função `selectChoice` para funcionar corretamente:
+    function selectChoice(choice) {
+    const choiceResult = results[choice];
+    const leftPage = document.getElementById('story-left');
+    const rightPage = document.getElementById('story-right');
+    
+    leftPage.innerHTML = `
+        <p>${choiceResult.text}</p>
+        <img src="${choiceResult.img}" alt="Resultado" class="result-image">
+    `;
+    
+    rightPage.innerHTML = choiceResult.newChoices.map((choiceText, index) => `
+        <button onclick="selectChoice(${choice}${index + 1})">${choiceText}</button>
+    `).join('');
+    }
+
+
+
+    // Inicializa a música ambiente após interação do usuário
+    function playBackgroundMusic() {
+    const bgMusic = document.getElementById('background-music');
+    if (bgMusic) {
+        bgMusic.volume = 0.5; // Define o volume inicial (ajuste conforme necessário)
+        bgMusic.play();
+    }
+    }
+
+    // Adiciona um evento para começar a música ao clicar em qualquer lugar
+    document.addEventListener('click', () => {
+    playBackgroundMusic();
+    });
+
+
+
+
+
 
 
 // =============================================================================================================================
@@ -261,10 +326,12 @@
                                        
                                          1: { // 6 Subescolha 1A Capitulo 4
                                             text:"Capítulo 4: Escolhas e Consequências; Elias aceita o papel de Guardião das Sombras. Ele percebe que as sombras não são inerentemente malignas, mas uma força natural que precisa de controle para evitar o caos. Ele usa o grimório para estabilizar o equilíbrio mágico, tornando-se um protetor temido e respeitado. Nos anos que se seguem, Elias torna-se uma figura misteriosa. Magos de todas as partes do mundo passam a procurá-lo em busca de ajuda ou sabedoria, mas ele raramente aparece pessoalmente. A torre sombria, agora sua morada, torna-se um símbolo de esperança para uns e de medo para outros. Elias aprende a dominar completamente as sombras, mas paga o preço da solidão, pois sua conexão com o mundo físico enfraquece com o tempo.",
+                                            img: "ImagensC4/Escolhas e Consequências - Mapa Queimado.webp",
                                          },
 
                                          2: { // 6 Subescolha 1A Capitulo 4
-                                            text:"Enquanto explora a torre, Elias encontra um diário escondido de Rodrick. Nas páginas, descobre que seu mentor havia selado a magia das sombras não para proteger o mundo, mas para controlar e manipular outros magos. Rodrick havia usado seu papel como Guardião para acumular poder, temendo que Elias ou outros pudessem superá-lo um dia. A raiva consome Elias, mas ele decide que o legado de seu mentor não o definirá. Ele volta ao grimório e encontra o feitiço final, um ritual que poderia destruir completamente as sombras, mas a um custo imenso. O ritual exigiria a destruição do próprio grimório, o único elo que Elias tinha com sua magia e com Rodrick. Mesmo assim, ele prossegue, determinado a corrigir os erros de seu mestre. Ao completar o ritual, Elias sente as sombras desaparecerem do mundo. A torre desmorona ao seu redor, e ele emerge como um mago comum, mas livre do peso das sombras. Ele passa a ensinar outros magos a usar a magia de forma responsável, dedicando sua vida a impedir que mais traições como a de Rodrick aconteçam."
+                                            text:"Capítulo 4: Enquanto explora a torre, Elias encontra um diário escondido de Rodrick. Nas páginas, descobre que seu mentor havia selado a magia das sombras não para proteger o mundo, mas para controlar e manipular outros magos. Rodrick havia usado seu papel como Guardião para acumular poder, temendo que Elias ou outros pudessem superá-lo um dia. A raiva consome Elias, mas ele decide que o legado de seu mentor não o definirá. Ele volta ao grimório e encontra o feitiço final, um ritual que poderia destruir completamente as sombras, mas a um custo imenso. O ritual exigiria a destruição do próprio grimório, o único elo que Elias tinha com sua magia e com Rodrick. Mesmo assim, ele prossegue, determinado a corrigir os erros de seu mestre. Ao completar o ritual, Elias sente as sombras desaparecerem do mundo. A torre desmorona ao seu redor, e ele emerge como um mago comum, mas livre do peso das sombras. Ele passa a ensinar outros magos a usar a magia de forma responsável, dedicando sua vida a impedir que mais traições como a de Rodrick aconteçam.",
+                                            img: "ImagensC4/explora a torre - Mapa Queimado.webp",
                                          }
                                     }
                             }
@@ -288,10 +355,12 @@
                                          
                                          1: { // 6 Subescolha 1A Capitulo 4
                                             text:"Capítulo 4: Escolhas e Consequências; Elias aceita o papel de Guardião das Sombras. Ele percebe que as sombras não são inerentemente malignas, mas uma força natural que precisa de controle para evitar o caos. Ele usa o grimório para estabilizar o equilíbrio mágico, tornando-se um protetor temido e respeitado. Nos anos que se seguem, Elias torna-se uma figura misteriosa. Magos de todas as partes do mundo passam a procurá-lo em busca de ajuda ou sabedoria, mas ele raramente aparece pessoalmente. A torre sombria, agora sua morada, torna-se um símbolo de esperança para uns e de medo para outros. Elias aprende a dominar completamente as sombras, mas paga o preço da solidão, pois sua conexão com o mundo físico enfraquece com o tempo.",
+                                            img: "ImagensC4/Escolhas e Consequências - Mapa Queimado.webp"
                                          },
 
                                          2: { // 6 Subescolha 1A Capitulo 4
-                                            text:"Enquanto explora a torre, Elias encontra um diário escondido de Rodrick. Nas páginas, descobre que seu mentor havia selado a magia das sombras não para proteger o mundo, mas para controlar e manipular outros magos. Rodrick havia usado seu papel como Guardião para acumular poder, temendo que Elias ou outros pudessem superá-lo um dia. A raiva consome Elias, mas ele decide que o legado de seu mentor não o definirá. Ele volta ao grimório e encontra o feitiço final, um ritual que poderia destruir completamente as sombras, mas a um custo imenso. O ritual exigiria a destruição do próprio grimório, o único elo que Elias tinha com sua magia e com Rodrick. Mesmo assim, ele prossegue, determinado a corrigir os erros de seu mestre. Ao completar o ritual, Elias sente as sombras desaparecerem do mundo. A torre desmorona ao seu redor, e ele emerge como um mago comum, mas livre do peso das sombras. Ele passa a ensinar outros magos a usar a magia de forma responsável, dedicando sua vida a impedir que mais traições como a de Rodrick aconteçam."
+                                            text:"Capítulo 4: Enquanto explora a torre, Elias encontra um diário escondido de Rodrick. Nas páginas, descobre que seu mentor havia selado a magia das sombras não para proteger o mundo, mas para controlar e manipular outros magos. Rodrick havia usado seu papel como Guardião para acumular poder, temendo que Elias ou outros pudessem superá-lo um dia. A raiva consome Elias, mas ele decide que o legado de seu mentor não o definirá. Ele volta ao grimório e encontra o feitiço final, um ritual que poderia destruir completamente as sombras, mas a um custo imenso. O ritual exigiria a destruição do próprio grimório, o único elo que Elias tinha com sua magia e com Rodrick. Mesmo assim, ele prossegue, determinado a corrigir os erros de seu mestre. Ao completar o ritual, Elias sente as sombras desaparecerem do mundo. A torre desmorona ao seu redor, e ele emerge como um mago comum, mas livre do peso das sombras. Ele passa a ensinar outros magos a usar a magia de forma responsável, dedicando sua vida a impedir que mais traições como a de Rodrick aconteçam.",
+                                             img: "ImagensC4/explora a torre - Mapa Queimado.webp"
                                          }
                                     }
                             }
@@ -567,8 +636,97 @@
 
             1: { // 2 Subescolha 2A Capitulo 2 - Cristal
                 text: "Elias, cauteloso, decidiu não avançar sem entender mais sobre o que enfrentava. 'Quem é você? Por que fui trazido aqui?', perguntou, sua voz soando mais firme do que se sentia. A figura encapuzada inclinou a cabeça, como se analisasse Elias, e respondeu com uma voz profunda: 'Eu sou o Guardião do Véu, aquele que protege os segredos do cristal. Este templo é um portal entre mundos, mas cada portal exige um preço. Você deve provar que é digno antes de seguir adiante.' Elias insistiu: 'O que é o Cristal das Passagens? Qual é o preço?' O Guardião riu, um som reverberante e desconcertante. 'O cristal é uma chave para todos os mundos, mas também uma âncora para o seu. Quanto mais longe você for, mais de si mesmo deixará para trás. Agora escolha: busque o poder, a sabedoria ou a liberdade.'",
-                img: "GuardiaoDoVeu.jpg",
+                img: "ImagensC2/GuardiaoDoVeu - Cristal.webp",
                 newChoices: ["Pedir ao Guardião que revele o poder do cristal.", "Perguntar sobre a sabedoria e os segredos do templo.", "Recusar-se a pagar qualquer preço e tentar sair do local."],
+
+                1: { // 3 Subescolha 2A Capitulo 3 - Cristal
+                    text:"Ao conversar com o Guardião do Véu, Elias busca entender os segredos por trás do Cristal das Passagens e os desafios impostos pelo templo. Cada escolha que faz pode conduzi-lo a uma revelação crucial, mas também a aproximação das verdades sombrias sobre si mesmo, o Cristal, e a ameaça oculta de A Sussuradora.",
+                    img: "ImagensC3/Capitulo3 - Cristal.webp",
+                    newChoices: ["Capítulo 3"],
+
+                    1: { // 4 Subescolha 2A Capitulo 3 - Cristal
+                        text: "Elias, intrigado, pergunta diretamente ao Guardião: 'O que é o poder do Cristal? Por que ele é tão importante?' O Guardião ergue a mão e o cristal no bolso de Elias começa a brilhar intensamente. 'O Cristal das Passagens é uma âncora para o equilíbrio entre os mundos. Ele contém fragmentos da essência primordial que formou a magia. Com ele, você pode acessar qualquer domínio, mas esse poder não é inofensivo. Um portador pode moldar realidades, mas ao ao fazê-lo, os eventos serão consumidos pelo fardo.'",
+                        img: "ImagensC2/GuardiaoDoVeu - Cristal.webp",
+                        newChoices: ["Continuar a conversa"],
+
+                        1:{
+                            text: "Elias encara o Guardião, sua mente dividida entre a intriga e o medo. Ele abre o cristal em seu bolso, sentindo uma pulsação que parece sincronizada com os batimentos cardíacos do próprio coração. O brilho aumenta, projetando reflexos luminosos que dançam pelas paredes do templo. 'Se o poder do cristal é tão grande, por que deveria confiar nele?' Elias pergunta, sua voz é de desconfiança. O Guardião se aproxima, cada passo reverberando como um trovão abafado. A aura ao redor dele é quase insuportável, mas Elias se mantém firme. “Não é o cristal em si que merece sua confiança, jovem mago”, responde o Guardião, 'mas o portador. Ele reflete quem você é: um herói, um vilão ou um instrumento do caos. Seu poder é um espelho, Elias.' ",
+                            img: "",
+                            newChoices: ["Revelação"],
+
+                            1: {
+                                text: "Com um gesto, o Guardião ergue a mão, criando uma projeção etérea no ar. Nela, Elias vê os fragmentos de um passado antigo: mundos sendo criados a partir do vazio, energias primordiais se fundindo e uma entidade incompreensível – A Sussuradora – emergindo das sombras, moldando realidades com um poder quase divino. 'Foi necessário um conselho de magos ancestrais para forjar o Cristal das Passagens', o Guardião continua, sua voz grave como um terremoto distante. 'Ele é o único artifício capaz de conter as forças descontroladas da Criação. Contudo, esse equilíbrio veio a um preço: a essência do cristal está conectada à entidade que buscamos selar. Sempre que você o utiliza, você a desperta... um pouco mais.' Elias sente um arrepio percorrendo sua espinha. 'Então, cada vez que eu usar o cristal, arrisque libertar essa... Sussuradora?' O Guardião acena com a cabeça. 'Sim. Mas, ao mesmo tempo, o cristal é a única defesa contra ela. Ele oferece acesso ao poder necessário para manter os mundos intactos. É uma arma e uma maldição, Elias. Cabe a você decidir como irá usá-lo.'",
+                                img: "",
+                                newChoices: ["Teste"],
+
+                                1: {
+                                    text: "O Guardião, percebendo a indecisão de Elias, faz um movimento com a mão. O templo se transforma, e Elias se encontra em uma vasta barra de energia mágica pulsante. Ao longo, ele vê três figuras emergindo da névoa, cada uma superfície um fragmento do Cristal das Passagens. O Guardião explica: 'Você deve provar que é digno de carregar esse poder. Cada fragmento oferece um aspecto do cristal. Escolha aquele que ressoa com seu coração. Mas lembre-se: cada escolha traz consigo um preço.'",
+                                    img: "",
+                                    newChoices: ["A Chama da Criação (Força Bruta)", "O Véu da Sabedoria (Visão Profunda)", "A Chave do Destino (Fuga e Liberdade)"],
+
+                                    1: {
+                                        text:"Elias avançou, olhando para as três figuras. Ele sente o peso de suas palavras e entende que qualquer decisão terá consequências irreversíveis. Com o cristal em mãos, pulsa nele uma mistura de medo, ambição e esperança. 'Eu não escolhi ser trazido para este templo, mas escolho agora. Se o destino dos mundos depende de mim, então enfrentei o que for necessário, não aceitarei nenhum dos itens – e aceitarei as consequências.' O templo começa a desmoronar ou a se transformar, dependendo do caminho escolhido, enquanto a voz de A Sussuradora ressoa ao fundo: 'Você pode me prender, Elias, mas não por muito tempo. O Cristal sempre encontrará um novo portador... e eu estarei esperando.'",
+                                        img: "",
+                                    },
+
+                                    2: {
+                                        text:"Elias avançou, olhando para as três figuras. Ele sente o peso de suas palavras e entende que qualquer decisão terá consequências irreversíveis. Com o cristal em mãos, pulsa nele uma mistura de medo, ambição e esperança. 'Eu não escolhi ser trazido para este templo, mas escolho agora. Se o destino dos mundos depende de mim, então enfrentei o que for necessário, não aceitarei nenhum dos itens – e aceitarei as consequências.' O templo começa a desmoronar ou a se transformar, dependendo do caminho escolhido, enquanto a voz de A Sussuradora ressoa ao fundo: 'Você pode me prender, Elias, mas não por muito tempo. O Cristal sempre encontrará um novo portador... e eu estarei esperando.'",
+                                        img: "",
+                                    },
+
+                                    3: {
+                                        text:"Elias avançou, olhando para as três figuras. Ele sente o peso de suas palavras e entende que qualquer decisão terá consequências irreversíveis. Com o cristal em mãos, pulsa nele uma mistura de medo, ambição e esperança. 'Eu não escolhi ser trazido para este templo, mas escolho agora. Se o destino dos mundos depende de mim, então enfrentei o que for necessário, não aceitarei nenhum dos itens – e aceitarei as consequências.' O templo começa a desmoronar ou a se transformar, dependendo do caminho escolhido, enquanto a voz de A Sussuradora ressoa ao fundo: 'Você pode me prender, Elias, mas não por muito tempo. O Cristal sempre encontrará um novo portador... e eu estarei esperando.'",
+                                        img: "",
+                                    },
+                                }
+                            }
+                        }
+                    }
+                },
+
+                2: { // 3 Subescolha 2B Capitulo 3 - Cristal
+                    text:"Ao conversar com o Guardião do Véu, Elias busca entender os segredos por trás do Cristal das Passagens e os desafios impostos pelo templo. Cada escolha que faz pode conduzi-lo a uma revelação crucial, mas também a aproximação das verdades sombrias sobre si mesmo, o Cristal, e a ameaça oculta de A Sussuradora.",
+                    img: "ImagensC3/Capitulo3 - Cristal.webp",
+                    newChoices: ["Capítulo 3"],
+
+                    1: { // 4 Subescolha 2B Capitulo 3 - Cristal
+                        text: "Elias adota uma abordagem cautelosa e questiona: 'Este templo... é mais do que um portal. Quais são seus segredos? O que está além dele?' O Guardião observa Elias por um momento antes de responder: 'O templo não foi construído por mãos mortais. Ele existe para conter os ecossistemas da criação e proteger os mundos de sua própria ambição. Mas os segredos que você tem um preço: conhecimento exige sacrifícios.'",
+                    }
+                },
+
+                3: { // 3 Subescolha 2C Capitulo 3 - Cristal
+                    text:"Ao conversar com o Guardião do Véu, Elias busca entender os segredos por trás do Cristal das Passagens e os desafios impostos pelo templo. Cada escolha que faz pode conduzi-lo a uma revelação crucial, mas também a aproximação das verdades sombrias sobre si mesmo, o Cristal, e a ameaça oculta de A Sussuradora.",
+                    img: "ImagensC3/Capitulo3 - Cristal.webp",
+                    newChoices: ["Capítulo 3"],
+
+                    1:{ // 4 Subescolha 2C Capitulo 3 - Cristal
+                        text: "Elias, desconfiado e desafiador, decida que não pagará nenhum preço para seguir adiante. 'Eu não sou um joguete neste lugar. Não serei manipulado. Encontrarei meu caminho sem ceder às suas condições.' O Guardião ergue uma sobrancelha invisível sob o capuz. 'Você acha que pode escapar do peso de sua escolha? Este templo não é apenas um lugar, mas um reflexo de quem você é. Fugir dele é fugir de si mesmo.' Quando Elias tenta sair, ele percebe que o templo está vivo, alterando-se para prendê-lo. Os corredores se distorcem, levando-o de volta à clareza inicial onde agora vê um círculo mágico com símbolos antigos. O Guardião reaparece, desta vez acompanhado por uma voz sussurrada e etérea: 'Você é fraco, Elias...'",
+                        img:"ImagensC3/desconfiado - Cristal.webp",
+                        newChoices:["Tentar sair do local"],
+
+                        1:{
+                            text:"Elias sente o peso das palavras do Guardião, mas sua determinação é inabalável. Ele olha diretamente para a figura encapuzada e declara: 'Eu não serei refém de enigmas nem de um destino que não escolhi. Se este templo é uma prisão, então encontrarei a saída – e farei isso à minha maneira.' Sem esperar resposta, Elias concentra sua energia mágica. Suas mãos começam a brilhar com um poder desconhecido enquanto ele traça um círculo mágico no ar, conectando os símbolos que instintivamente reconhecem como antigos feitiços de teletransporte. Mas, enquanto canaliza o feitiço, o ambiente ao seu redor começa a se contorcer. O templo parece reagir à rebeldia de Elias. O chão treme, e rachaduras surgem nas paredes cristalinas. A voz sussurrada ecoa novamente, desta vez mais próxima e quase dentro de sua mente: 'Você me chama, Elias... Me liberte...' O Guardião ergue sua mão, tentando interromper o feitiço. 'Você não entende o que está fazendo! Este templo não é apenas uma barreira – é a última proteção contra o fim de tudo!' Mas Elias, ignorando o aviso, intensifica seu feitiço. O cristal em seu bolso brilha tão intensamente que parece queimar sua pele, pulsando em sincronia com as palavras da entidade conhecida como A Sussuradora . Sua voz ganha forma, cada palavra penetrando mais fundo na mente de Elias: 'Rodrick me aprisionou. Ele roubou sua liberdade... e agora deseja roubá-la de você. Abra o caminho, Elias. Mostre ao universo quem realmente é digno do poder.'",
+                            img: "ImagensC4/Fuga - Cristal.webp",
+                            newChoices: ["Capítulo 4"],
+
+                            1: {
+                                text:"De repente, uma fissura se abriu à frente de Elias, como se ele tivesse rasgado o próprio tecido do espaço. Do outro lado, ele vê algo indescritível: uma forma envolta em sombras líquidas e ondulantes, com olhos que brilham como sóis negros. A figura, inegavelmente, é A Sussuradora. O Guardião gritou, sua voz ecoando com desespero: 'Se você se libertar, não haverá mais mundos para salvar. Você destruirá tudo o que conhece e será escravizado por ela!'. Elias hesitou por um breve momento. Ele percebe que a fissura é uma encruzilhada de destinos:",
+                                img: "ImagensC4/Sussuradora.webp",
+                                newChoices: ["Fechar o portal com sua magia restante, aceitando que o Guardião possa estar certo, mas sacrificando sua chance de escapar e se libertar do templo.", "Avançar e libertar A Sussuradora, abraçando o poder absoluto que ela oferece, mas arriscando-se a tornar-se o instrumento do caos."],
+
+                                1: {
+                                    text:"Elias, com escorrer suor pelo rosto e o cristal pulsando como um coração furioso em seu bolso, faz sua escolha. Ele ergue a mão, seja para fechar o portal ou para cruzá-lo. O Guardião, incapaz de intervir a tempo, apenas observa, sua expressão oculta pelo capuz. Com um grito de esforço final, Elias usa toda a magia restante para selar a fissura. A imagem de A Sussuradora se dissolve em sombras, e o templo finalmente se acalma. O Guardião o encara, seu tom agora solene: 'Você passou no teste, Elias. Não por buscar poder, mas por resistir a ele. Agora, você é digno de proteger este equilíbrio.' Elias é levado ao núcleo do templo, onde aceita seu papel como o novo Guardião do Véu, selando o templo para sempre e marcando o início de um novo ciclo de proteção",
+                                    img: "ImagensC4/Guardião das Sombras - Cristal.webp",
+                                },
+
+                                2: {
+                                    text: "Elias, com escorrer suor pelo rosto e o cristal pulsando como um coração furioso em seu bolso, faz sua escolha. Ele ergue a mão, seja para fechar o portal ou para cruzá-lo. O Guardião, incapaz de intervir a tempo, apenas observa, sua expressão oculta pelo capuz. Elias dá um passo à frente, atravessando a fissura. Assim que o faz, o cristal em seu bolso explode em uma luz negra, e ele sente um poder esmagador invadindo seu corpo. A Sussuradora emerge completamente, sua forma incompreensível envolvendo Elias em sombras. 'Você fez bem, pequeno mortal. Agora, seja meu arauto.' O templo desmorona enquanto A Sussuradora se liberta, consumindo o Guardião e tudo ao redor. Elias, agora um com a entidade primordial, percebe que se tornou uma força imparável, uma tempestade de destruição e caos, destinada a remodelar ou destruir o universo. ",
+                                    img: "ImagensC4/Libertador do Caos - Cristal.webp",
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         3: { // Subescolha 3A Capitulo 2 - Cristal
@@ -591,7 +749,7 @@
 
     3: { // escolha 1A Capitulo 1
         text: "A chave parecia vibrar levemente enquanto Elias a segurava. De repente, um ruído grave ressoou pela casa de Rodrick, e o chão começou a rachar, revelando uma escadaria oculta. Ao descer, Elias encontrou uma câmara iluminada por uma luz verde etérea. No centro, havia uma mesa com um diário antigo e um artefato estranho que parecia ser uma combinação de um espelho e uma esfera. No diário, Elias leu:'A chave negra é a conexão entre mundos. Mas cuidado: cada porta exige um preço.' Elias precisava decidir:",
-        img: "chave_result.jpg",
+        img: "ImagensC1/Chave Negra.webp",
         newChoices: ["Usar a chave para ativar o artefato.", "Continuar lendo o diário em busca de mais pistas.", "Deixar o local e buscar ajuda."],
 
         // Subescolhas 3A, 3B, 3C adicionadas aqui
