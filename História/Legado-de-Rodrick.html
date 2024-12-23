@@ -146,7 +146,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Capa do Livro -->
+        <!-- Capa Livro -->
         <div class="cover visible" id="cover">
             <div class="book-cover" style="background-image: url('ImagensC1/Capa.webp'); background-size: cover; background-position: center;">
                 <h1 style="background-color: rgba(0, 0, 0, 0.5); padding: 10px; border-radius: 5px;">O Legado de Rodrick</h1>
@@ -164,6 +164,7 @@
                     <p>"Tudo o que busca está nas sombras."</p>
                     <p>Agora, Elias deve descobrir os segredos do grimório e a verdade por trás da morte de seu mestre. Ele embarca em uma jornada onde cada escolha pode revelar ou ocultar segredos cruciais.</p>
                     <img src="ImagensC1/Prólogo.webp" alt="Cena do prólogo">
+                    <audio src="Sons/HistóriaEmAudio/Prólogo.wav">Audio</audio>
                 </div>
                 <div class="page page-right">
                     <button onclick="flipPage('story')">Começar História</button>
@@ -171,7 +172,7 @@
             </div>
         </div>
 
-        <!-- Página do Livro -->
+        <!-- Página Livro -->
         <div class="story-page" id="story">
             <div class="book">
                 <div class="page page-left" id="story-left">
@@ -905,16 +906,52 @@
                     1: {
                         text: "Elias, armado apenas com sua determinação e um feitiço de luz que Rodrick lhe ensinara, avança em direção à criatura. Ela recua momentaneamente diante do brilho mágico, mas logo avança com ferocidade. Durante o confronto, Elias percebe que o monstro é feito de sombras condensadas, alimentadas por magia. Ao derrotá-la com o feitiço, a criatura se desfaz em fragmentos de energia que se fundem no ar, revelando uma visão: Rodrick em seus últimos momentos, enfrentando três figuras encapuzadas. Uma delas pronuncia: 'O Véu cairá, e ele deve ser o sacrifício.' Antes que Elias possa entender mais, uma segunda criatura aparece, desta vez maior e mais forte.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "Depois de derrotar a criatura, Elias é confrontado por mais visões do passado de Rodrick, mostrando sua luta contra os Guardiões do Véu. As sombras falam com Elias, oferecendo-lhe poder em troca de sua lealdade. Ele hesita, mas sente uma conexão crescente com a magia sombria.",
+                                img: "",
+                                newChoices: ["Herdar o poder"],
+
+                                    1: { 
+                                        text: "Elias aceita o poder oferecido pelas sombras, usando-o para derrotar os Guardiões do Véu e estabelecer um novo equilíbrio no mundo mágico. Ele se torna o protetor da magia sombria, impondo suas próprias regras para garantir que nunca mais seja usada indevidamente.",
+                                        img: ""
+                                    }
+                            }
                     },
 
                     2: {
                         text: "Ao examinar o círculo, Elias percebe que ele não está completo. Alguns símbolos estão apagados, como se tivessem sido deliberadamente removidos. Usando o grimório, Elias começa a reconstruí-los, e uma memória residual é ativada. Rodrick aparece, conjurando um escudo mágico enquanto luta contra três figuras encapuzadas. Ele grita: 'Elias, nunca use a chave para abrir o portal sem terminar o círculo!' Antes que Elias possa processar as palavras, o círculo emite um clarão, e ele é jogado para trás, perdendo a consciência. Ao acordar, percebe que uma sombra se arrasta para fora do círculo, murmurando: 'O mentor não era o único.'",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "Reconstruindo o círculo, Elias ativa um portal que o leva diretamente ao esconderijo dos Guardiões do Véu. Lá, ele descobre que Rodrick tentou manipular as sombras para seu próprio benefício, colocando o equilíbrio do mundo em risco.",
+                                img: "",
+                                newChoices: ["Confrontar Rodrick"],
+
+                                    1: {
+                                        text: "Chocado com as ações de seu mentor, Elias decide destruir a chave negra e a magia sombria de uma vez por todas. Apesar do sacrifício pessoal, ele impede que qualquer entidade possa usá-la novamente. A ordem mágica antiga é enfraquecida, mas o mundo é salvo do colapso.",
+                                        img: ""
+                                    }
+                            }
                     },
 
                     3: {
                         text: "Elias corre de volta ao portal, mas ele já começou a encolher. Com medo, ele tenta usar a chave negra para reativá-lo, mas a chave fica quente e o queima. Ao olhar ao redor, percebe que está cercado por figuras humanoides feitas de sombra, todas sussurrando o nome de Rodrick. Enquanto tenta escapar, Elias tropeça em um objeto metálico no chão: um medalhão com o emblema dos Guardiões do Véu. Ele se lembra do que viu na esfera – uma torre em ruínas. Aquilo deve ser o próximo destino.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "Elias segue para a torre que viu no reflexo da esfera. Ao chegar, ele descobre um grimório ainda mais antigo que contém instruções para libertar a entidade aprisionada por Rodrick. Ele hesita, mas sente o poder das sombras crescendo ao seu redor.",
+                                img: "",
+                                newChoices: ["Invocar o espírito de Rodrick"],
+
+                                    1: {
+                                        text: "Elias, consumido pelo desejo de saber mais sobre o legado de Rodrick, decide liberar a entidade. O mundo é tomado pelo caos, e Elias desaparece nas sombras, tornando-se um mito sombrio contado por gerações futuras.",
+                                        img: ""
+                                    }
+                            }
                     }
             },
 
@@ -926,16 +963,52 @@
                     1: {
                         text: "O mapa leva Elias até uma cripta nos arredores da cidade. Lá, ele encontra um altar com inscrições semelhantes às do grimório. Enquanto explora, ouve passos ecoando no corredor. Ao se esconder, percebe que um grupo de indivíduos encapuzados entrou na cripta. Eles começam a realizar um ritual, e Elias observa enquanto uma criatura é convocada. Ele ouve trechos de suas conversas e descobre que Rodrick era parte de um plano maior para proteger um segredo enterrado há séculos – mas ele falhou.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "Na cripta, Elias descobre que Rodrick era parte de uma aliança que protegia a magia sombria. Ao confrontar os Guardiões do Véu, Elias percebe que as sombras estão corrompendo sua própria alma.",
+                                img: "",
+                                newChoices: ["Confrontar"],
+
+                                    1: {
+                                        text: "Elias, incapaz de resistir à tentação, é consumido pelas sombras. Ele destrói os Guardiões e assume o controle das forças sombrias, aterrorizando o mundo com seu poder incomparável.",
+                                        img: ""
+                                    }
+                            }
                     },
 
                     2: {
                         text: "Elias usa os símbolos do grimório e cria um pequeno círculo de evocação. Ao completar o feitiço, a figura de Rodrick aparece, mas está incompleta e desvanecente. 'Elias... eles me pegaram desprevenido... não confie em ninguém que busque a chave negra... as sombras consomem até a alma mais pura...' Antes que Elias consiga mais informações, a conexão é interrompida por uma força que tenta atacar diretamente sua mente. Ele mal consegue dissipar a energia antes de desmaiar.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "O espírito de Rodrick alerta Elias sobre um artefato que pode conter as sombras para sempre. Elias segue suas instruções e encontra o artefato, mas descobre que precisará de aliados para usá-lo.",
+                                img: "",
+                                newChoices: ["Encontrar Eldarion"],
+
+                                    1: {
+                                        text:"Com a ajuda de Eldarion e outros magos, Elias usa o artefato para neutralizar a ameaça das sombras. Eles fundam uma nova ordem mágica baseada em equilíbrio e cooperação, protegendo o mundo de futuros perigos.",
+                                        img: ""
+                                    }
+                            }
                     },
 
                     3: {
                         text: "Elias sobe para o andar superior e encontra um baú trancado com o mesmo emblema da chave negra. Usando a chave, ele abre o baú e encontra uma carta destinada a Eldarion. Na carta, Rodrick descreve uma traição iminente dentro do círculo de magos a que ele pertencia, mencionando um nome: Malthor. Elias decide que precisa encontrar Eldarion, mas antes de sair, sente uma presença atrás de si. Quando se vira, vê um vulto encapuzado.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "A carta que Elias encontra revela que Rodrick sabia da existência de um traidor entre os Guardiões. Elias decide confrontar os membros restantes, levando a uma batalha na antiga sede da ordem.",
+                                img: "",
+                                newChoices: ["Confrontar"],
+
+                                    1: {
+                                        text: "Ao desvendar a verdade, Elias percebe que Rodrick não era completamente inocente. Ele destrói a chave negra e os grimórios sombrios, eliminando qualquer vestígio de magia sombria.",
+                                        img: ""
+                                    }
+                            }
                     }
             },
 
@@ -947,16 +1020,52 @@
                     1: {
                         text: "Eldarion ativa proteções mágicas enquanto Elias luta contra as criaturas. Durante a batalha, Eldarion revela que o grimório contém um segredo antigo, uma chave para manter o equilíbrio entre os mundos. Rodrick, ao usar a chave negra, inadvertidamente enfraqueceu esse equilíbrio. Com esforço, eles derrotam as criaturas, mas Eldarion avisa que mais estão por vir. Ele sugere que Elias continue a jornada para encontrar a Torre dos Guardiões.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "Durante a batalha, Elias percebe que as criaturas estão sendo controladas por um líder sombrio – alguém que Rodrick conhecia. Elias e Eldarion unem forças para confrontar esse líder.",
+                                img: "",
+                                newChoices: ["Confrontar"],
+
+                                    1: {
+                                        text: "Depois de derrotar o líder, Elias aceita o manto de protetor das sombras, aprendendo a controlá-las e usá-las para o bem.",
+                                        img: ""
+                                    }
+                            }
                     },
 
                     2: {
                         text: "Elias e Eldarion fogem para um antigo santuário. Lá, Eldarion realiza um ritual para selar temporariamente a energia do grimório. Durante o ritual, ele revela que Rodrick havia planejado um golpe contra os Guardiões do Véu, mas foi traído por alguém que confiava. Eldarion avisa que a chave negra deve ser destruída ou usada corretamente antes que mais portais sejam abertos. Eles decidem partir para o local indicado no mapa do diário.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "Eldarion e Elias descobrem que o grimório pode ser usado para criar um novo equilíbrio mágico. Eles convocam outros magos e iniciam um movimento para reconstruir as antigas ordens mágicas.",
+                                img: "",
+                                newChoices: ["Conseguir novo equilíbrio mágico"],
+
+                                    1: {
+                                        text: "Juntos, Elias e os magos estabelecem uma nova era de magia, onde as sombras são controladas e usadas para proteger o mundo.",
+                                        img: ""
+                                    }
+                            }
                     },
 
                     3: {
                         text: "Elias folheia o grimório e encontra um feitiço de proteção, mas ao lançá-lo, sente uma onda de dor atravessar seu corpo. O feitiço afasta as criaturas, mas também ativa uma energia dentro do grimório, revelando um fragmento de memória. Rodrick está diante de uma figura encapuzada que diz: 'Seu sacrifício não será em vão, velho tolo.' Elias percebe que o grimório contém a verdade sobre a morte de Rodrick, mas terá que desvendar o código que protege suas páginas finais.",
                         img: "",
+                        newChoices: ["Capítulo 3"],
+
+                            1: {
+                                text: "Ao ativar o grimório, Elias é transportado para a dimensão sombria. Lá, ele descobre a entidade que Rodrick selou. Ela o seduz com promessas de poder absoluto.",
+                                img: "",
+                                newChoices: ["Grimório"],
+
+                                    1: {
+                                        text: "Elias, atraído pelas promessas, liberta a entidade, e o mundo é tomado por trevas. Ele se torna o agente do caos, temido por todos.",
+                                        img: ""
+                                    }
+                            }
                     }
             },
 
