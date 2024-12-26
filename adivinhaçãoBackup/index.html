@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Adivinhação</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎲 Jogo de Adivinhação 🎲</h1>
+        <p>Escolha a dificuldade:</p>
+        <select id="difficulty">
+            <option value="50">Fácil (1-50)</option>
+            <option value="100" selected>Médio (1-100)</option>
+            <option value="1000">Difícil (1-1000)</option>
+        </select>
+        <p>Tente adivinhar o número!</p>
+        <input type="number" id="guessInput" placeholder="Digite seu palpite" min="1">
+        <button id="checkButton">Verificar</button>
+        <p id="message"></p>
+        <div id="result"></div>
+        <button id="restartButton" class="hidden">Jogar Novamente</button>
+    </div>
+
+    <ul class="menu">
+        <div class="toggleBtn">
+            <ion-icon name="add-outline"></ion-icon>
+        </div>
+        <li style="--i:0; --x:-150px; --y:0px; --clr: rgb(183, 255, 0);"><a href="https://profkellton.github.io/SitePrincipal/index.html"><ion-icon name="person-outline"></ion-icon></a></li>
+        <li style="--i:1; --x:150px; --y:0px; --clr: rgb(255, 174, 0); "><a href="https://profkellton.github.io/Store/Collections.html"><ion-icon name="code-slash-outline"></ion-icon></a></li>
+        <li style="--i:2; --x:0px; --y:-150px;  --clr: rgb(43, 255, 0);  "><a href="https://profkellton.github.io/Games/"><ion-icon name="game-controller"></ion-icon></a></li>
+        <li style="--i:3; --x:105px; --y:105px; --clr: rgb(255, 0, 43); "><a href="#"><ion-icon name="image-outline"></ion-icon></a></li>
+        <li style="--i:4; --x:-105px; --y:-105px; --clr: rgb(0, 255, 187);"><a href="#"><ion-icon name="book"></ion-icon></a></li>
+        <li style="--i:5; --x:0px; --y:150px; --clr: rgb(0, 153, 255);"><a href="https://profkellton.github.io/Store/README.md"><ion-icon name="mail-unread-outline"></ion-icon></a></li>
+        <li style="--i:6; --x:105px; --y:-105px; --clr: rgb(185, 100, 255);"><a href="https://profkellton.github.io/Store/Tendências.html"><ion-icon name="laptop-outline"></ion-icon></a></li>
+        <li style="--i:7; --x:-105px; --y:105px; --clr: rgb(255, 0, 200);" ><a href="https://www.youtube.com/@Professor.KRodrigo"><ion-icon name="logo-youtube"></ion-icon></a></li>
+    </ul>
+
+    <audio id="successSound" src="success.mp3"></audio>
+    <audio id="errorSound" src="error.mp3"></audio>
+    <audio id="clickSound" src="click.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
