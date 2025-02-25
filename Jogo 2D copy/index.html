@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo 2D</title>
+    <style>
+        * { margin: 0; padding: 0; overflow: hidden; }
+        body { background-color: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        canvas { background: url('imagens/Pano\ de\ Fundo\ -\ Medieval.webp') repeat-x; }
+        #gameOverScreen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 24px;
+            padding: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop autoplay>
+        <source src="sons/retro-8bit-happy-videogame-music-243998.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="jumpSound">
+        <source src="sons/collect-points-190037.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="gameOverSound">
+        <source src="sons/game-over-classic-206486.mp3" type="audio/mpeg">
+    </audio>
+    <canvas id="gameCanvas"></canvas>
+    <div id="gameOverScreen">
+        <p>Game Over</p>
+        <p>Ogros Pulados: <span id="score">0</span></p>
+        <button onclick="restartGame()">Reiniciar</button>
+    </div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const bgMusic = document.getElementById("bgMusic");
+        const jumpSound = document.getElementById("jumpSound");
+        const gameOverSound = document.getElementById("gameOverSound");
+        const gameOverScreen = document.getElementById("gameOverScreen");
+        const scoreDisplay = document.getElementById("score");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let score = 0;
+        let gameOver = false;
+
+        const player = {
+            x: 50,
+            y: canvas.height - 150,
+            width: 50,
+            height: 50,
+            speed: 5,
+            dy: 0,
+            gravity: 0.5,
+            jumpPower: -10,
+            grounded: false,
+            image: new Image()
+        };
+        player.image.src = 'imagens/game.png';
+
+        const ogreImage = new Image();
+        ogreImage.src = 'imagens/ogro.png';
+
+        const obstacles = [
+            { x: 400, y: canvas.height - 80, width: 40, height: 40 },
+            { x: 700, y: canvas.height - 120, width: 40, height: 80 }
+        ];
+        
+        let bgX = 0;
+        let keys = {};
+
+        window.addEventListener("keydown", (e) => keys[e.key] = true);
+        window.addEventListener("keyup", (e) => keys[e.key] = false);
+
+        function checkCollision() {
+            obstacles.forEach(obstacle => {
+                if (
+                    player.x < obstacle.x + obstacle.width - 10 &&
+                    player.x + player.width > obstacle.x + 10 &&
+                    player.y < obstacle.y + obstacle.height - 10 &&
+                    player.y + player.height > obstacle.y + 10
+                ) {
+                    gameOver = true;
+                    gameOverScreen.style.display = 'block';
+                    gameOverSound.play();
+                    scoreDisplay.textContent = score;
+                }
+                if (player.x > obstacle.x + obstacle.width && !obstacle.passed) {
+                    score++;
+                    obstacle.passed = true;
+                }
+            });
+        }
+
+        function movePlayer() {
+            if (keys['ArrowRight'] || keys['d']) player.x += player.speed;
+            if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
+            if ((keys['ArrowUp'] || keys['w']) && player.grounded) {
+                player.dy = player.jumpPower;
+                player.grounded = false;
+                jumpSound.play();
+            }
+
+            player.dy += player.gravity;
+            player.y += player.dy;
+
+            if (player.y + player.height >= canvas.height - 50) {
+                player.y = canvas.height - player.height - 50;
+                player.grounded = true;
+            }
+        }
+
+        function moveBackground() {
+            bgX -= 1.5;
+            if (bgX <= -canvas.width) bgX = 0;
+        }
+
+        function moveObstacles() {
+            obstacles.forEach(obstacle => {
+                obstacle.x -= 1.5;
+                if (obstacle.x + obstacle.width < 0) {
+                    obstacle.x = canvas.width + Math.random() * 300;
+                    obstacle.passed = false;
+                }
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
+            obstacles.forEach(obstacle => {
+                ctx.drawImage(ogreImage, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+        }
+
+        function gameLoop() {
+            if (!gameOver) {
+                movePlayer();
+                moveBackground();
+                moveObstacles();
+                checkCollision();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function restartGame() {
+            gameOver = false;
+            gameOverScreen.style.display = 'none';
+            player.x = 50;
+            player.y = canvas.height - 150;
+            score = 0;
+            obstacles.forEach(obstacle => obstacle.x = canvas.width + Math.random() * 300);
+            gameLoop();
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
