@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Digital</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #ff00ff 0%, #8000ff 100%);
+        }
+
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #f472b6, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .user-info {
+            font-size: 1rem;
+        }
+
+        .color-selector button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-right: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day, .calendar-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border: 1px solid #ffffff33;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .calendar-label {
+            font-weight: bold;
+            cursor: default;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(244, 114, 182, 0.2);
+        }
+
+        .calendar-day.active {
+            background: #f472b6;
+        }
+
+        .calendar-day.today {
+            background: #22c55e !important;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .main-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        .selected-day {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .note-title {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .note-area {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        .note-card {
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(167, 139, 250, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .note-card h4 {
+            margin: 0 0 5px 0;
+        }
+
+        .note-card p {
+            margin: 0 0 10px 0;
+        }
+
+        .note-card button {
+            margin-right: 10px;
+            padding: 5px 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .sidebar {
+                margin-right: 0;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+
+            .main-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-left">
+            <img src="/vite.svg" alt="Logo">
+            <div class="gradient-text">Diário Digital</div>
+        </div>
+        <div class="user-info">
+            Usuário: João
+            <div class="color-selector">
+                <button onclick="changeColor('linear-gradient(135deg, #0ea5e9, #3b82f6)')">Azul</button>
+                <button onclick="changeColor('linear-gradient(135deg, #ef4444, #dc2626)')">Vermelho</button>
+                <button onclick="changeColor('linear-gradient(135deg, #ff00ff 0%, #8000ff 100%)')">Rosa</button>
+                <button onclick="changeColor('linear-gradient(135deg, #000000, #1f1f1f)')">Preto</button>
+                <button onclick="changeColor('linear-gradient(135deg, #fde68a, #f59e0b)')">Amarelo</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="calendar-header">
+                <button id="prevMonth">◀</button>
+                <div id="currentMonthYear"></div>
+                <button id="nextMonth">▶</button>
+            </div>
+            <div id="calendar" class="calendar"></div>
+        </div>
+
+        <div class="main-content">
+            <div id="selectedDay" class="selected-day">Selecione um dia</div>
+            <input type="text" id="noteTitle" class="note-title" placeholder="Título da Anotação">
+            <textarea id="noteInput" class="note-area" placeholder="Digite sua anotação..."></textarea>
+            <button id="addNoteBtn">Criar Anotação</button>
+            <div id="notesContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const notes = {};
+        const notesContainer = document.getElementById('notesContainer');
+        const calendar = document.getElementById('calendar');
+        const addNoteBtn = document.getElementById('addNoteBtn');
+        const noteInput = document.getElementById('noteInput');
+        const noteTitle = document.getElementById('noteTitle');
+        const selectedDayDisplay = document.getElementById('selectedDay');
+        const currentMonthYear = document.getElementById('currentMonthYear');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+
+        let currentDate = new Date();
+        let selectedDay = null;
+
+        function renderCalendar() {
+            calendar.innerHTML = '';
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const today = new Date();
+
+            currentMonthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+
+            const firstDayOfWeek = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            weekdays.forEach(day => {
+                const label = document.createElement('div');
+                label.className = 'calendar-label';
+                label.textContent = day;
+                calendar.appendChild(label);
+            });
+
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const emptyCell = document.createElement('div');
+                calendar.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+
+                const key = `${day}/${month + 1}/${year}`;
+                if (notes[key]) {
+                    dayElement.classList.add('active');
+                }
+
+                if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayElement.classList.add('today');
+                }
+
+                dayElement.onclick = () => selectDay(day, month, year);
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        function selectDay(day, month, year) {
+            selectedDay = `${day}/${month + 1}/${year}`;
+            selectedDayDisplay.textContent = `Anotações do dia: ${selectedDay}`;
+            noteInput.placeholder = `Digite sua anotação para ${selectedDay}...`;
+            renderNotes();
+        }
+
+        function addNote() {
+            if (!selectedDay) {
+                alert('Selecione um dia no calendário!');
+                return;
+            }
+
+            const noteText = noteInput.value.trim();
+            const titleText = noteTitle.value.trim();
+            if (noteText === '' || titleText === '') return;
+
+            if (!notes[selectedDay]) {
+                notes[selectedDay] = [];
+            }
+
+            notes[selectedDay].push({ title: titleText, content: noteText });
+            noteInput.value = '';
+            noteTitle.value = '';
+            renderNotes();
+            renderCalendar();
+        }
+
+        function renderNotes() {
+            notesContainer.innerHTML = '';
+            if (notes[selectedDay]) {
+                notes[selectedDay].forEach((note, index) => {
+                    const noteCard = document.createElement('div');
+                    noteCard.className = 'note-card';
+
+                    const title = document.createElement('h4');
+                    title.textContent = note.title;
+
+                    const content = document.createElement('p');
+                    content.textContent = note.content;
+
+                    const editBtn = document.createElement('button');
+                    editBtn.textContent = 'Editar';
+                    editBtn.onclick = () => editNote(selectedDay, index);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Excluir';
+                    deleteBtn.onclick = () => deleteNote(selectedDay, index);
+
+                    noteCard.appendChild(title);
+                    noteCard.appendChild(content);
+                    noteCard.appendChild(editBtn);
+                    noteCard.appendChild(deleteBtn);
+                    notesContainer.appendChild(noteCard);
+                });
+            }
+        }
+
+        function editNote(day, index) {
+            const newTitle = prompt('Editar título:', notes[day][index].title);
+            const newContent = prompt('Editar conteúdo:', notes[day][index].content);
+
+            if (newTitle !== null && newContent !== null && newTitle.trim() !== '' && newContent.trim() !== '') {
+                notes[day][index].title = newTitle.trim();
+                notes[day][index].content = newContent.trim();
+            }
+
+            renderNotes();
+            renderCalendar();
+        }
+
+        function deleteNote(day, index) {
+            notes[day].splice(index, 1);
+            if (notes[day].length === 0) delete notes[day];
+            renderNotes();
+            renderCalendar();
+        }
+
+        prevMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        addNoteBtn.addEventListener('click', addNote);
+
+        function changeColor(color) {
+            document.documentElement.style.setProperty('--bg-gradient', color);
+        }
+
+        renderCalendar();
+    </script>
+</body>
+
+</html>
