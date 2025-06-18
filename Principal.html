@@ -8,6 +8,12 @@
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #ff00ff 0%, #8000ff 100%);
+            --main-content-blur: none;
+            /* Control blur for main content */
+            --main-content-pointer-events: auto;
+            /* Control pointer events for main content */
+            --main-content-user-select: auto;
+            /* Control user select for main content */
         }
 
         body {
@@ -19,6 +25,25 @@
             display: flex;
             flex-direction: column;
             padding: 20px;
+            overflow-x: hidden;
+            /* Prevent horizontal scroll when sidebar opens */
+            transition: background 0.5s ease-in-out;
+            /* Smooth transition for background color change */
+        }
+
+        /* Animation for floating effect */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         header {
@@ -26,6 +51,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 50;
+            flex-wrap: wrap;
+            /* Allow items to wrap on smaller screens */
+            gap: 15px;
+            /* Space between header items */
         }
 
         .header-left {
@@ -43,355 +74,1570 @@
             background: linear-gradient(135deg, #f472b6, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.5rem;
+            background-clip: text;
+            color: transparent;
+            font-size: 2em;
             font-weight: bold;
         }
 
-        .user-info {
-            font-size: 1rem;
-        }
-
-        .color-selector button {
-            margin-left: 10px;
-            padding: 5px 10px;
+        /* Menu button styles */
+        #menuButton {
+            background: none;
             border: none;
-            border-radius: 5px;
+            color: white;
+            font-size: 2em;
             cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
-        .container {
+        #menuButton:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Sidebar styles */
+        #sidebar {
+            height: 100%;
+            width: 0;
+            /* Hidden by default */
+            position: fixed;
+            z-index: 1001;
+            /* Above modal overlay to allow closing */
+            top: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Semi-transparent black */
+            overflow-x: hidden;
+            transition: 0.5s;
+            /* Smooth transition for opening/closing */
+            padding-top: 60px;
+            color: white;
             display: flex;
-            flex-direction: row;
-            flex: 1;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
         }
 
-        .sidebar {
-            width: 400px;
-            background: rgba(255, 255, 255, 0.05);
+        #sidebar.open {
+            width: 280px;
+            /* Width when open */
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        #closeSidebar {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        #sidebar h2,
+        #sidebar h3 {
+            margin-bottom: 15px;
+            color: #f472b6;
+            /* Match gradient text color */
+        }
+
+        #colorOptions,
+        #autoDeleteOptions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Reduced gap for more space */
+            width: 100%;
+            margin-bottom: 20px; /* Reduced margin-bottom */
+        }
+
+        #colorOptions button {
+            background: var(--button-gradient, linear-gradient(135deg, #f472b6, #a78bfa));
+            border: none;
+            color: white;
+            padding: 12px 15px; /* Reduced padding */
+            text-align: left;
+            font-size: 1em; /* Reduced font size */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+        }
+
+        #colorOptions button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        #colorOptions button::before {
+            content: '';
+            display: inline-block;
+            width: 20px; /* Reduced size */
+            height: 20px; /* Reduced size */
+            border-radius: 50%;
+            margin-right: 10px; /* Reduced margin */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #colorOptions button[data-color*="ff00ff"]::before {
+            background: linear-gradient(135deg, #ff00ff, #8000ff);
+        }
+
+        #colorOptions button[data-color*="00c6ff"]::before {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+        }
+
+        #colorOptions button[data-color*="00ff00"]::before {
+            background: linear-gradient(135deg, #00ff00, #008000);
+        }
+
+        #colorOptions button[data-color*="ffcc00"]::before {
+            background: linear-gradient(135deg, #ffcc00, #ff6600);
+        }
+
+        #colorOptions button[data-color*="A020F0"]::before {
+            background: linear-gradient(135deg, #A020F0, #5C2B6A);
+        }
+
+        #colorOptions button[data-color*="000000"]::before {
+            background: linear-gradient(135deg, #000000, #333333);
+        }
+
+
+        main {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            flex-wrap: wrap;
+            /* Allow wrapping on smaller screens */
+            filter: var(--main-content-blur);
+            /* Apply blur here */
+            pointer-events: var(--main-content-pointer-events);
+            /* Control interactions */
+            user-select: var(--main-content-user-select);
+            /* Control text selection */
+            transition: filter 0.3s ease;
+            /* Smooth transition for blur */
+        }
+
+        .calendar-container {
+            background-color: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 20px;
-            margin-right: 20px;
-            animation: float 6s ease-in-out infinite;
+            border-radius: 15px;
+            padding: 25px;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            animation: float 3s ease-in-out infinite;
+            /* Floating animation */
         }
 
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-        }
-
-        .calendar-day, .calendar-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            border: 1px solid #ffffff33;
+        .calendar-header button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1em;
+            transition: background-color 0.3s ease;
         }
 
-        .calendar-label {
+        .calendar-header button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .day-name {
             font-weight: bold;
-            cursor: default;
-            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
         }
 
-        .calendar-day:hover {
+        .day {
+            padding: 10px 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            position: relative;
+            font-weight: bold;
+        }
+
+        .day:hover {
+            background-color: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(244, 114, 182, 0.2);
         }
 
-        .calendar-day.active {
-            background: #f472b6;
+        .day.selected {
+            background-color: #f472b6;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .calendar-day.today {
-            background: #22c55e !important;
+        .day.has-notes {
+            position: relative;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        .day.has-notes::after {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #6dff6d;
+            /* Default green for note indicator */
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
         }
 
-        .main-content {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
+        /* Conditional styling for the note indicator if theme is green */
+        body[data-theme*="00ff00"] .day.has-notes::after {
+            background-color: #ffeb3b;
+            /* Yellow for better contrast on green theme */
+            box-shadow: 0 0 5px rgba(255, 235, 59, 0.7);
+        }
+
+
+        .day.current-day {
+            outline: 3px solid #ffeb3b;
+            /* Marker for current day */
+            outline-offset: 2px;
+            box-shadow: 0 0 15px rgba(255, 235, 59, 0.5);
+            /* Glowing effect */
+        }
+
+        .notes-container {
+            background-color: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 20px;
-            min-height: 500px;
+            border-radius: 15px;
+            padding: 25px;
+            flex: 2;
+            min-width: 400px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .selected-day {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+        /* --- START: New/Modified styles for add-note-section --- */
+        .add-note-section {
+            background-color: rgba(255, 255, 255, 0.2);
+            /* Slightly brighter */
+            border-radius: 15px;
+            /* More rounded corners */
+            padding: 25px;
+            /* More padding */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            /* Space between inputs */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            /* Softer shadow */
         }
 
-        .note-title {
+        .notes-container h2.gradient-text {
+            font-size: 2em;
+            /* Ensure it matches the header h1 size */
+            margin-bottom: 5px;
+            /* Adjust spacing */
+        }
+
+        .notes-container #fullSelectedDateDisplay {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            /* For icon and input alignment */
+            align-items: center;
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2em;
+            pointer-events: none;
+            /* Make sure icon doesn't block clicks on input */
+            z-index: 10;
+        }
+
+        .add-note-section input[type="text"],
+        .add-note-section textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            /* Full width */
+            padding: 15px 15px 15px 45px;
+            /* Left padding for icon */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Subtle border */
+            border-radius: 10px;
+            /* More rounded input fields */
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Lighter input background */
             color: white;
-            margin-bottom: 10px;
+            font-size: 1.1em;
+            outline: none;
+            box-sizing: border-box;
+            /* Include padding in width */
+            transition: border-color 0.3s ease, background-color 0.3s ease;
         }
 
-        .note-area {
+        .add-note-section textarea {
+            padding-left: 15px;
+            /* No icon for textarea usually, adjust if needed */
+        }
+
+        .add-note-section input::placeholder,
+        .add-note-section textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .add-note-section input:focus,
+        .add-note-section textarea:focus {
+            border-color: #a78bfa;
+            /* Highlight on focus */
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Char count display */
+        .char-count-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
-            min-height: 150px;
-            padding: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
+        }
+
+        #charCount {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: right;
+            margin-top: -10px; /* Pull it closer to textarea */
+        }
+
+        .add-note-section button#addNoteBtn {
+            background: linear-gradient(135deg, #f472b6, #a78bfa);
+            /* Gradient button */
             color: white;
-            margin-bottom: 10px;
-            resize: vertical;
+            border: none;
+            padding: 15px;
+            /* More padding */
+            border-radius: 10px;
+            /* More rounded button */
+            cursor: pointer;
+            font-size: 2em;
+            /* Larger icon-like font size */
+            font-weight: bold;
+            display: flex;
+            /* For centering content */
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            /* Fixed height for a square-ish button */
+            width: 60px;
+            /* Fixed width */
+            align-self: flex-end;
+            /* Align to the right, consistent with image */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            /* Stronger shadow */
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+            position: relative;
+            /* For the plus sign */
+        }
+
+        /* Plus sign for the button */
+        .add-note-section button#addNoteBtn::before {
+            content: '+';
+            font-size: 1em;
+            /* Adjust size relative to button font-size */
+            line-height: 1;
+            /* Ensure vertical centering */
+        }
+
+        .add-note-section button#addNoteBtn:hover {
+            background: linear-gradient(135deg, #e457a4, #926ee4);
+            /* Darker gradient on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- END: New/Modified styles for add-note-section --- */
+
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+            /* Allow notes list to fill available space */
+            overflow-y: auto;
+            /* Enable scrolling for notes if they overflow */
+            padding-right: 10px;
+            /* Space for scrollbar */
         }
 
         .note-card {
-            background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(167, 139, 250, 0.1));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .note-card h4 {
-            margin: 0 0 5px 0;
+        .note-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .note-card h3 {
+            margin: 0;
+            color: #f472b6;
         }
 
         .note-card p {
-            margin: 0 0 10px 0;
+            margin: 0;
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: pre-wrap;
+            /* Preserve line breaks */
+            word-wrap: break-word;
+            /* Break long words */
         }
 
-        .note-card button {
-            margin-right: 10px;
-            padding: 5px 10px;
+        .note-date-display {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: right;
+            margin-top: 10px;
+            padding-top: 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .note-labels {
+            margin-top: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .note-label {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            text-transform: capitalize;
+        }
+
+        .note-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .note-actions button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.3s ease;
+        }
+
+        .note-actions button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .note-actions .delete-btn {
+            background-color: #e74c3c;
+            /* Red for delete */
+        }
+
+        .note-actions .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .note-actions .share-btn {
+            background-color: #25D366;
+            /* WhatsApp green */
+            color: white;
+        }
+
+        .note-actions .share-btn:hover {
+            background-color: #1DA851;
+        }
+
+        /* Modals (Edit, Confirm Delete, Share) */
+        #editModalOverlay,
+        #confirmModalOverlay,
+        #shareModalOverlay {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Darker overlay */
+            backdrop-filter: blur(8px);
+            /* More blur for a stronger effect */
+            z-index: 1050;
+            /* Above sidebar */
+            justify-content: center;
+            align-items: center;
+        }
+
+        #editModalOverlay.active,
+        #confirmModalOverlay.active,
+        #shareModalOverlay.active {
+            display: flex;
+        }
+
+        .edit-modal-content,
+        .confirm-modal-content,
+        .share-modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            /* Lighter modal background */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            color: #333;
+            /* Dark text for modal content */
+        }
+
+        .edit-modal-content h3,
+        .confirm-modal-content h3,
+        .share-modal-content h3 {
+            margin-top: 0;
+            color: #a78bfa;
+            font-size: 1.8em;
+        }
+
+        .edit-modal-content input[type="text"],
+        .edit-modal-content textarea,
+        .share-modal-content input[type="tel"] {
+            /* Style for phone number input */
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            color: #333;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        .edit-modal-content textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .edit-modal-buttons,
+        .confirm-modal-buttons,
+        .share-modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .edit-modal-buttons button,
+        .confirm-modal-buttons button,
+        .share-modal-buttons button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .edit-modal-buttons button:hover,
+        .confirm-modal-buttons button:hover,
+        .share-modal-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #saveEditedNote,
+        #confirmDeleteBtn,
+        #confirmShareBtn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #saveEditedNote:hover,
+        #confirmDeleteBtn:hover,
+        #confirmShareBtn:hover {
+            background-color: #218838;
+        }
+
+        #cancelEdit,
+        #cancelDeleteBtn,
+        #cancelShareBtn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #cancelEdit:hover,
+        #cancelDeleteBtn:hover,
+        #cancelShareBtn:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .container {
+            header {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
             }
 
-            .sidebar {
-                margin-right: 0;
-                margin-bottom: 20px;
+            .header-right {
                 width: 100%;
+                justify-content: space-between;
+                /* Spread filter and menu button */
             }
 
-            .main-content {
-                width: 100%;
+            main {
+                flex-direction: column;
+                padding: 10px;
+                /* Adjust padding for smaller screens */
             }
+
+            .calendar-container,
+            .notes-container {
+                min-width: unset;
+                width: 100%;
+                padding: 15px;
+                /* Adjust padding for smaller screens */
+            }
+
+            #sidebar.open {
+                width: 100%;
+                /* Full width on small screens */
+            }
+
+            .gradient-text {
+                font-size: 1.5em;
+            }
+
+            header {
+                padding: 0 10px;
+            }
+
+            .edit-modal-content,
+            .confirm-modal-content,
+            .share-modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .note-actions {
+                position: static;
+                /* Stack buttons on smaller screens if needed */
+                margin-top: 10px;
+                justify-content: flex-end;
+            }
+
+            .add-note-section input[type="text"],
+            .add-note-section textarea {
+                padding: 12px 10px 12px 40px;
+                /* Adjust padding for icons on smaller screens */
+            }
+
+            .add-note-section textarea {
+                padding-left: 10px;
+                /* No icon for textarea usually, adjust if needed */
+            }
+        }
+
+        /* Styles for label filter in header */
+        .filter-container {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            /* Allow filter to grow */
+        }
+
+        .filter-container label {
+            display: none;
+            /* Hide the label as text is now inside select */
+        }
+
+        .filter-container select {
+            padding: 10px 15px;
+            /* Increased padding */
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1em;
+            outline: none;
+            box-sizing: border-box;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203.8-15%209.7-2.7%205.9-1.2%2012.8%203.4%2017.4l137.2%20137.2c3.9%203.9%209%205.9%2014.1%205.9s10.2-2%2014.1-5.9l137.2-137.2c4.6-4.6%206.1-11.5%203.4-17.4z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px auto;
+            min-width: 150px;
+            /* Ensure minimum width */
+            flex-grow: 1;
+            /* Allow it to take available space */
+        }
+
+        .filter-container select option {
+            background-color: #1a1a1a;
+            /* Darker background for options */
+            color: white;
+            padding: 5px;
+        }
+
+        /* Auto Delete Options styles */
+        #autoDeleteOptions select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1em;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203.8-15%209.7-2.7%205.9-1.2%2012.8%203.4%2017.4l137.2%20137.2c3.9%203.9%209%205.9%2014.1%205.9s10.2-2%2014.1-5.9l137.2-137.2c4.6-4.6%206.1-11.5%203.4-17.4z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 12px auto;
+        }
+
+        #autoDeleteOptions select option {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 5px;
+        }
+
+        /* Search Bar Styles */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            /* Allow search bar to grow */
+        }
+
+        #noteSearch {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            /* Adjust padding for icon */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1em;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            min-width: 150px;
+        }
+
+        #noteSearch::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        #noteSearch:focus {
+            border-color: #f472b6;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-container::before {
+            content: "\1F50D";
+            /* Unicode for search icon */
+            font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif;
+            /* Ensure icon renders */
+            position: absolute;
+            left: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1em;
+            pointer-events: none;
         }
     </style>
 </head>
 
-<body>
+<body data-theme="default">
     <header>
         <div class="header-left">
-            <img src="/vite.svg" alt="Logo">
-            <div class="gradient-text">Diário Digital</div>
+            <img src="Gemini_Generated_Image_w46nf2w46nf2w46n.png" alt="Diário Logo">
+            <h1 class="gradient-text">Diário Digital</h1>
         </div>
-        <div class="user-info">
-            Usuário: João
-            <div class="color-selector">
-                <button onclick="changeColor('linear-gradient(135deg, #0ea5e9, #3b82f6)')">Azul</button>
-                <button onclick="changeColor('linear-gradient(135deg, #ef4444, #dc2626)')">Vermelho</button>
-                <button onclick="changeColor('linear-gradient(135deg, #ff00ff 0%, #8000ff 100%)')">Rosa</button>
-                <button onclick="changeColor('linear-gradient(135deg, #000000, #1f1f1f)')">Preto</button>
-                <button onclick="changeColor('linear-gradient(135deg, #fde68a, #f59e0b)')">Amarelo</button>
+        <div class="header-right" style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+            <div class="search-container">
+                <input type="text" id="noteSearch" placeholder="Pesquisar anotações...">
             </div>
-        </div>
+            <div class="filter-container">
+                <label for="labelFilter">Filtrar por Etiqueta:</label>
+                <select id="labelFilter">
+                    <option value="">Filtrar por Etiqueta</option>
+                </select>
+            </div>
+            <button id="menuButton">&#9776;</button> </div>
     </header>
 
-    <div class="container">
-        <div class="sidebar">
-            <div class="calendar-header">
-                <button id="prevMonth">◀</button>
-                <div id="currentMonthYear"></div>
-                <button id="nextMonth">▶</button>
-            </div>
-            <div id="calendar" class="calendar"></div>
+    <aside id="sidebar">
+        <a href="javascript:void(0)" id="closeSidebar">&times;</a>
+        <h2>Configurações</h2>
+        <div id="colorOptions">
+            <h3>Cor de Fundo</h3>
+            <button data-color="linear-gradient(135deg, #ff00ff 0%, #8000ff 100%)">Roxo Mágico</button>
+            <button data-color="linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)">Céu Azul</button>
+            <button data-color="linear-gradient(135deg, #00ff00 0%, #008000 100%)">Verde Floresta</button>
+            <button data-color="linear-gradient(135deg, #ffcc00 0%, #ff6600 100%)">Pôr do Sol</button>
+            <button data-color="linear-gradient(135deg, #000000 0%, #333333 100%)">Noite Escura</button>
+            <button data-color="linear-gradient(135deg, #A020F0 0%, #5C2B6A 100%)">Padrão</button>
         </div>
 
-        <div class="main-content">
-            <div id="selectedDay" class="selected-day">Selecione um dia</div>
-            <input type="text" id="noteTitle" class="note-title" placeholder="Título da Anotação">
-            <textarea id="noteInput" class="note-area" placeholder="Digite sua anotação..."></textarea>
-            <button id="addNoteBtn">Criar Anotação</button>
-            <div id="notesContainer"></div>
+        <div id="autoDeleteOptions">
+            <h3>Excluir Anotações Antigas</h3>
+            <select id="autoDeleteInterval">
+                <option value="never">Nunca</option>
+                <option value="1_day">Após 1 dia</option>
+                <option value="1_week">Após 1 semana</option>
+                <option value="1_month">Após 1 mês</option>
+            </select>
+        </div>
+    </aside>
+
+    <main>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button id="prevMonthBtn">&lt;</button>
+                <h2 id="monthYear"></h2>
+                <button id="nextMonthBtn">&gt;</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="day-name">Dom</div>
+                <div class="day-name">Seg</div>
+                <div class="day-name">Ter</div>
+                <div class="day-name">Qua</div>
+                <div class="day-name">Qui</div>
+                <div class="day-name">Sex</div>
+                <div class="day-name">Sáb</div>
+            </div>
+            <div class="calendar-grid" id="calendarDays">
+                </div>
+        </div>
+
+        <div class="notes-container">
+            <h2 class="gradient-text">Anotações do Dia</h2>
+            <p id="fullSelectedDateDisplay"></p>
+
+            <div class="add-note-section">
+                <div class="input-group">
+                    <span class="icon">&#9999;</span> <input type="text" id="noteTitle" placeholder="Título da Anotação">
+                </div>
+                <div class="input-group">
+                    <span class="icon">&#127997;</span> <input type="text" id="noteLabels" placeholder="Etiquetas (separadas por vírgula)">
+                </div>
+                <textarea id="noteContent" placeholder="Escreva sua anotação aqui..." maxlength="200"
+                    onkeyup="updateCharCount()" onpaste="updateCharCount()"></textarea>
+                <div class="char-count-wrapper">
+                    <span id="charCount">200 caracteres restantes</span>
+                    <button id="addNoteBtn"></button> </div>
+            </div>
+            <div class="notes-list" id="notesList">
+                </div>
+        </div>
+    </main>
+
+    <div id="editModalOverlay">
+        <div class="edit-modal-content">
+            <h3>Editar Anotação</h3>
+            <input type="text" id="editNoteTitle" placeholder="Novo Título">
+            <input type="text" id="editNoteLabels" placeholder="Etiquetas (separadas por vírgula)">
+            <textarea id="editNoteContent" placeholder="Novo Conteúdo"></textarea>
+            <div class="edit-modal-buttons">
+                <button id="saveEditedNote">Salvar</button>
+                <button id="cancelEdit">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModalOverlay">
+        <div class="confirm-modal-content">
+            <h3>Confirmar Exclusão</h3>
+            <p>Tem certeza que deseja apagar esta anotação?</p>
+            <div class="confirm-modal-buttons">
+                <button id="confirmDeleteBtn">Sim, Apagar</button>
+                <button id="cancelDeleteBtn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="shareModalOverlay">
+        <div class="share-modal-content">
+            <h3>Compartilhar Anotação via WhatsApp</h3>
+            <p>A anotação será compartilhada com o título e conteúdo.</p>
+            <input type="tel" id="whatsappNumber" placeholder="Número do WhatsApp (ex: 55 DDD XXXXXXXXX)"
+                pattern="[0-9+ ]+">
+            <div class="share-modal-buttons">
+                <button id="confirmShareBtn">Compartilhar</button>
+                <button id="cancelShareBtn">Cancelar</button>
+            </div>
         </div>
     </div>
 
     <script>
-        const notes = {};
-        const notesContainer = document.getElementById('notesContainer');
-        const calendar = document.getElementById('calendar');
+        const monthYearEl = document.getElementById('monthYear');
+        const calendarDaysEl = document.getElementById('calendarDays');
+        const prevMonthBtn = document.getElementById('prevMonthBtn');
+        const nextMonthBtn = document.getElementById('nextMonthBtn');
+        const fullSelectedDateDisplay = document.getElementById('fullSelectedDateDisplay'); // New element for full date
         const addNoteBtn = document.getElementById('addNoteBtn');
-        const noteInput = document.getElementById('noteInput');
-        const noteTitle = document.getElementById('noteTitle');
-        const selectedDayDisplay = document.getElementById('selectedDay');
-        const currentMonthYear = document.getElementById('currentMonthYear');
-        const prevMonthBtn = document.getElementById('prevMonth');
-        const nextMonthBtn = document.getElementById('nextMonth');
+        const noteTitleInput = document.getElementById('noteTitle');
+        const noteContentInput = document.getElementById('noteContent');
+        const noteLabelsInput = document.getElementById('noteLabels');
+        const notesListEl = document.getElementById('notesList');
+        const charCountEl = document.getElementById('charCount'); // Character count element
+        const noteSearchInput = document.getElementById('noteSearch'); // Search input element
+
+        // Elements for sidebar
+        const menuButton = document.getElementById('menuButton');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const colorOptions = document.getElementById('colorOptions');
+        const autoDeleteIntervalSelect = document.getElementById('autoDeleteInterval'); // Auto delete select
+
+        // Elements for filter
+        const labelFilter = document.getElementById('labelFilter');
+
+        // Elements for edit modal
+        const editModalOverlay = document.getElementById('editModalOverlay');
+        const editNoteTitleInput = document.getElementById('editNoteTitle');
+        const editNoteContentInput = document.getElementById('editNoteContent');
+        const editNoteLabelsInput = document.getElementById('editNoteLabels');
+        const saveEditedNoteBtn = document.getElementById('saveEditedNote');
+        const cancelEditBtn = document.getElementById('cancelEdit');
+
+        // Elements for confirm delete modal
+        const confirmModalOverlay = document.getElementById('confirmModalOverlay');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+        // Elements for share modal
+        const shareModalOverlay = document.getElementById('shareModalOverlay');
+        const whatsappNumberInput = document.getElementById('whatsappNumber');
+        const confirmShareBtn = document.getElementById('confirmShareBtn');
+        const cancelShareBtn = document.getElementById('cancelShareBtn');
 
         let currentDate = new Date();
-        let selectedDay = null;
+        let today = new Date(); // To mark the current day
+        let selectedDay = currentDate.getDate();
+        let notes = JSON.parse(localStorage.getItem('diaryNotes')) || {};
+        let editingNoteInfo = null; // Stores {day, index} of the note being edited
+        let noteToDeleteInfo = null; // Stores {day, index} of the note to be deleted
+        let noteToShareInfo = null; // Stores {title, content} of the note to be shared
+        let activeLabelFilter = ''; // Stores the currently selected label for filtering
+        let activeSearchQuery = ''; // Stores the current search query
+
+        const monthNames = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+        const dayNames = [
+            'domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'
+        ];
+
+        const MAX_CHARS = 200; // Max characters for note content
+
+        // --- THEME LOAD/SAVE ---
+        function loadTheme() {
+            const savedColor = localStorage.getItem('selectedThemeColor');
+            if (savedColor) {
+                document.documentElement.style.setProperty('--bg-gradient', savedColor);
+                if (savedColor.includes('00ff00')) {
+                    document.body.setAttribute('data-theme', 'green-theme');
+                } else {
+                    document.body.setAttribute('data-theme', 'default');
+                }
+            }
+        }
+
+        function saveTheme(color) {
+            localStorage.setItem('selectedThemeColor', color);
+        }
+        // --- END THEME LOAD/SAVE ---
+
+        // --- CHARACTER COUNT LOGIC ---
+        function updateCharCount() {
+            const currentLength = noteContentInput.value.length;
+            const remaining = MAX_CHARS - currentLength;
+            charCountEl.textContent = `${remaining} caracteres restantes`;
+            if (remaining < 0) {
+                charCountEl.style.color = 'red';
+            } else {
+                charCountEl.style.color = 'rgba(255, 255, 255, 0.7)';
+            }
+        }
+        // --- END CHARACTER COUNT LOGIC ---
+
 
         function renderCalendar() {
-            calendar.innerHTML = '';
+            calendarDaysEl.innerHTML = '';
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-            const today = new Date();
 
-            currentMonthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+            monthYearEl.textContent = `${monthNames[month]} ${year}`;
 
-            const firstDayOfWeek = new Date(year, month, 1).getDay();
+            const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0 for Sunday, 1 for Monday
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            weekdays.forEach(day => {
-                const label = document.createElement('div');
-                label.className = 'calendar-label';
-                label.textContent = day;
-                calendar.appendChild(label);
-            });
-
-            for (let i = 0; i < firstDayOfWeek; i++) {
-                const emptyCell = document.createElement('div');
-                calendar.appendChild(emptyCell);
+            // Add empty days for the offset
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('day');
+                calendarDaysEl.appendChild(emptyDay);
             }
 
+            // Add actual days
             for (let day = 1; day <= daysInMonth; day++) {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.textContent = day;
+                const dayEl = document.createElement('div');
+                dayEl.classList.add('day');
+                dayEl.textContent = day;
+                dayEl.dataset.day = day;
 
-                const key = `${day}/${month + 1}/${year}`;
-                if (notes[key]) {
-                    dayElement.classList.add('active');
+                const fullDateKey = `${day}-${month + 1}-${year}`;
+                if (notes[fullDateKey] && notes[fullDateKey].length > 0) {
+                    dayEl.classList.add('has-notes');
                 }
 
+                // Mark current day
                 if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                    dayElement.classList.add('today');
+                    dayEl.classList.add('current-day');
                 }
 
-                dayElement.onclick = () => selectDay(day, month, year);
-                calendar.appendChild(dayElement);
+                if (day === selectedDay && month === currentDate.getMonth() && year === currentDate.getFullYear()) {
+                    dayEl.classList.add('selected');
+                }
+
+                dayEl.addEventListener('click', () => {
+                    selectedDay = day;
+                    activeLabelFilter = ''; // Reset filter when a day is clicked
+                    labelFilter.value = ''; // Update filter dropdown
+                    activeSearchQuery = ''; // Reset search when a day is clicked
+                    noteSearchInput.value = ''; // Update search input
+                    // Remove 'selected' from previously selected day
+                    const prevSelected = document.querySelector('.day.selected');
+                    if (prevSelected) {
+                        prevSelected.classList.remove('selected');
+                    }
+                    dayEl.classList.add('selected');
+                    renderNotes();
+                });
+                calendarDaysEl.appendChild(dayEl);
             }
-        }
-
-        function selectDay(day, month, year) {
-            selectedDay = `${day}/${month + 1}/${year}`;
-            selectedDayDisplay.textContent = `Anotações do dia: ${selectedDay}`;
-            noteInput.placeholder = `Digite sua anotação para ${selectedDay}...`;
-            renderNotes();
-        }
-
-        function addNote() {
-            if (!selectedDay) {
-                alert('Selecione um dia no calendário!');
-                return;
-            }
-
-            const noteText = noteInput.value.trim();
-            const titleText = noteTitle.value.trim();
-            if (noteText === '' || titleText === '') return;
-
-            if (!notes[selectedDay]) {
-                notes[selectedDay] = [];
-            }
-
-            notes[selectedDay].push({ title: titleText, content: noteText });
-            noteInput.value = '';
-            noteTitle.value = '';
-            renderNotes();
-            renderCalendar();
+            populateLabelFilter(); // Populate filter whenever calendar is rendered (new notes might be added)
+            renderNotes(); // Re-render notes for the initially selected day or filtered
         }
 
         function renderNotes() {
-            notesContainer.innerHTML = '';
-            if (notes[selectedDay]) {
-                notes[selectedDay].forEach((note, index) => {
+            notesListEl.innerHTML = '';
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const fullDateKey = `${selectedDay}-${month + 1}-${year}`;
+
+            const selectedDateObj = new Date(year, month, selectedDay);
+            const dayOfWeek = dayNames[selectedDateObj.getDay()];
+            const formattedDate = `${dayOfWeek}, ${selectedDay} de ${monthNames[month]} de ${year}`;
+            fullSelectedDateDisplay.textContent = formattedDate;
+
+            let notesToDisplay = [];
+
+            // If a label filter is active, get all notes matching that label
+            if (activeLabelFilter) {
+                Object.values(notes).forEach(dayNotes => {
+                    dayNotes.forEach(note => {
+                        if (note.labels && note.labels.includes(activeLabelFilter)) {
+                            notesToDisplay.push(note);
+                        }
+                    });
+                });
+            } else {
+                // Otherwise, get notes for the selected day
+                if (notes[fullDateKey] && notes[fullDateKey].length > 0) {
+                    notesToDisplay = [...notes[fullDateKey]]; // Use spread to create a copy
+                }
+            }
+
+            // Apply search filter if active
+            if (activeSearchQuery) {
+                const query = activeSearchQuery.toLowerCase();
+                notesToDisplay = notesToDisplay.filter(note =>
+                    note.title.toLowerCase().includes(query) || note.content.toLowerCase().includes(query)
+                );
+            }
+
+
+            if (notesToDisplay.length > 0) {
+                notesToDisplay.forEach((note, index) => {
                     const noteCard = document.createElement('div');
-                    noteCard.className = 'note-card';
+                    noteCard.classList.add('note-card');
 
-                    const title = document.createElement('h4');
-                    title.textContent = note.title;
+                    const titleEl = document.createElement('h3');
+                    titleEl.textContent = note.title;
+                    noteCard.appendChild(titleEl);
 
-                    const content = document.createElement('p');
-                    content.textContent = note.content;
+                    const contentEl = document.createElement('p');
+                    contentEl.textContent = note.content;
+                    noteCard.appendChild(contentEl);
+
+                    // Add Labels
+                    if (note.labels && note.labels.length > 0) {
+                        const labelsDiv = document.createElement('div');
+                        labelsDiv.classList.add('note-labels');
+                        note.labels.forEach(label => {
+                            const labelSpan = document.createElement('span');
+                            labelSpan.classList.add('note-label');
+                            labelSpan.textContent = label;
+                            labelsDiv.appendChild(labelSpan);
+                        });
+                        noteCard.appendChild(labelsDiv);
+                    }
+
+                    // Add date display (for filtered notes, show their original date)
+                    const noteDateDisplayEl = document.createElement('div');
+                    noteDateDisplayEl.classList.add('note-date-display');
+                    const originalNoteDate = new Date(note.timestamp);
+                    noteDateDisplayEl.textContent = `Criado em: ${originalNoteDate.toLocaleDateString('pt-BR')} às ${originalNoteDate.toLocaleTimeString('pt-BR')}`;
+                    noteCard.appendChild(noteDateDisplayEl);
+
+
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.classList.add('note-actions');
 
                     const editBtn = document.createElement('button');
                     editBtn.textContent = 'Editar';
-                    editBtn.onclick = () => editNote(selectedDay, index);
+                    // For filtered notes, we need to find the original day and index
+                    editBtn.onclick = () => {
+                        let originalDayKey = '';
+                        let originalIndex = -1;
+                        for (const dayKey in notes) {
+                            const foundIndex = notes[dayKey].findIndex(n => n.timestamp === note.timestamp && n.title === note.title);
+                            if (foundIndex !== -1) {
+                                originalDayKey = dayKey;
+                                originalIndex = foundIndex;
+                                break;
+                            }
+                        }
+                        if (originalDayKey && originalIndex !== -1) {
+                            openEditModal(originalDayKey, originalIndex, note.title, note.content, (note.labels || []).join(', '));
+                        }
+                    };
+                    actionsDiv.appendChild(editBtn);
+
+                    // Share Button
+                    const shareBtn = document.createElement('button');
+                    shareBtn.textContent = 'Compartilhar';
+                    shareBtn.classList.add('share-btn');
+                    shareBtn.onclick = () => {
+                        openShareModal(note.title, note.content);
+                    };
+                    actionsDiv.appendChild(shareBtn);
 
                     const deleteBtn = document.createElement('button');
-                    deleteBtn.textContent = 'Excluir';
-                    deleteBtn.onclick = () => deleteNote(selectedDay, index);
+                    deleteBtn.textContent = 'Apagar';
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.onclick = () => {
+                        let originalDayKey = '';
+                        let originalIndex = -1;
+                        for (const dayKey in notes) {
+                            const foundIndex = notes[dayKey].findIndex(n => n.timestamp === note.timestamp && n.title === note.title);
+                            if (foundIndex !== -1) {
+                                originalDayKey = dayKey;
+                                originalIndex = foundIndex;
+                                break;
+                            }
+                        }
+                        if (originalDayKey && originalIndex !== -1) {
+                            openConfirmDeleteModal(originalDayKey, originalIndex);
+                        }
+                    };
+                    actionsDiv.appendChild(deleteBtn);
 
-                    noteCard.appendChild(title);
-                    noteCard.appendChild(content);
-                    noteCard.appendChild(editBtn);
-                    noteCard.appendChild(deleteBtn);
-                    notesContainer.appendChild(noteCard);
+                    noteCard.appendChild(actionsDiv);
+                    notesListEl.appendChild(noteCard);
+                });
+            } else {
+                notesListEl.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7);">Nenhuma anotação para este dia ou etiqueta com o filtro atual.</p>';
+            }
+        }
+
+        function addNote() {
+            const title = noteTitleInput.value.trim();
+            const content = noteContentInput.value.trim();
+            const labels = noteLabelsInput.value.split(',').map(label => label.trim()).filter(label => label !== '');
+
+            if (title === '' || content === '') {
+                alert('Por favor, preencha o título e o conteúdo da anotação.');
+                return;
+            }
+            if (content.length > MAX_CHARS) {
+                alert(`O conteúdo da anotação excede o limite de ${MAX_CHARS} caracteres.`);
+                return;
+            }
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const fullDateKey = `${selectedDay}-${month + 1}-${year}`;
+
+            if (!notes[fullDateKey]) {
+                notes[fullDateKey] = [];
+            }
+            notes[fullDateKey].push({
+                title: title,
+                content: content,
+                labels: labels, // Store labels
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('diaryNotes', JSON.stringify(notes));
+
+            noteTitleInput.value = '';
+            noteContentInput.value = '';
+            noteLabelsInput.value = ''; // Clear labels input
+            updateCharCount(); // Reset character count
+            renderNotes();
+            renderCalendar(); // Update calendar to show 'has-notes' indicator
+            populateLabelFilter(); // Update filter options after adding a new label
+        }
+
+        function deleteNoteConfirmed() {
+            if (!noteToDeleteInfo) return;
+            const { day, index } = noteToDeleteInfo;
+
+            notes[day].splice(index, 1);
+            if (notes[day].length === 0) {
+                delete notes[day]; // Remove the day entry if no notes left
+            }
+            localStorage.setItem('diaryNotes', JSON.stringify(notes));
+            renderNotes();
+            renderCalendar(); // Update calendar to remove 'has-notes' indicator if empty
+            populateLabelFilter(); // Update filter options after deleting a note
+            closeConfirmDeleteModal();
+        }
+
+        // --- EDIT MODAL LOGIC ---
+        function openEditModal(day, index, title, content, labels) {
+            editingNoteInfo = { day, index };
+            editNoteTitleInput.value = title;
+            editNoteContentInput.value = content;
+            editNoteLabelsInput.value = labels; // Set labels for editing
+            editModalOverlay.classList.add('active');
+            document.documentElement.style.setProperty('--main-content-blur', 'blur(5px)');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'none');
+            document.documentElement.style.setProperty('--main-content-user-select', 'none');
+        }
+
+        function closeEditModal() {
+            editModalOverlay.classList.remove('active');
+            document.documentElement.style.setProperty('--main-content-blur', 'none');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'auto');
+            document.documentElement.style.setProperty('--main-content-user-select', 'auto');
+            editingNoteInfo = null;
+        }
+
+        saveEditedNoteBtn.addEventListener('click', () => {
+            if (!editingNoteInfo) return;
+
+            const { day, index } = editingNoteInfo;
+            const newTitle = editNoteTitleInput.value.trim();
+            const newContent = editNoteContentInput.value.trim();
+            const newLabels = editNoteLabelsInput.value.split(',').map(label => label.trim()).filter(label => label !== '');
+
+            if (newTitle === '' || newContent === '') {
+                alert('Título e conteúdo não podem ser vazios.');
+                return;
+            }
+
+            notes[day][index].title = newTitle;
+            notes[day][index].content = newContent;
+            notes[day][index].labels = newLabels; // Update labels
+            localStorage.setItem('diaryNotes', JSON.stringify(notes));
+            renderNotes();
+            populateLabelFilter(); // Update filter options after editing labels
+            renderCalendar(); // Rerender calendar to update has-notes if labels changed significantly (unlikely but good practice)
+            closeEditModal();
+        });
+
+        cancelEditBtn.addEventListener('click', closeEditModal);
+
+        // --- CONFIRM DELETE MODAL LOGIC ---
+        function openConfirmDeleteModal(day, index) {
+            noteToDeleteInfo = { day, index };
+            confirmModalOverlay.classList.add('active');
+            document.documentElement.style.setProperty('--main-content-blur', 'blur(5px)');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'none');
+            document.documentElement.style.setProperty('--main-content-user-select', 'none');
+        }
+
+        function closeConfirmDeleteModal() {
+            confirmModalOverlay.classList.remove('active');
+            document.documentElement.style.setProperty('--main-content-blur', 'none');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'auto');
+            document.documentElement.style.setProperty('--main-content-user-select', 'auto');
+            noteToDeleteInfo = null;
+        }
+
+        confirmDeleteBtn.addEventListener('click', deleteNoteConfirmed);
+        cancelDeleteBtn.addEventListener('click', closeConfirmDeleteModal);
+
+        // --- SHARE MODAL LOGIC ---
+        function openShareModal(title, content) {
+            noteToShareInfo = { title, content };
+            whatsappNumberInput.value = ''; // Clear previous number
+            shareModalOverlay.classList.add('active');
+            document.documentElement.style.setProperty('--main-content-blur', 'blur(5px)');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'none');
+            document.documentElement.style.setProperty('--main-content-user-select', 'none');
+        }
+
+        function closeShareModal() {
+            shareModalOverlay.classList.remove('active');
+            document.documentElement.style.setProperty('--main-content-blur', 'none');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'auto');
+            document.documentElement.style.setProperty('--main-content-user-select', 'auto');
+            noteToShareInfo = null;
+        }
+
+        function shareNoteToWhatsApp() {
+            if (!noteToShareInfo) return;
+
+            const phoneNumber = whatsappNumberInput.value.replace(/[^0-9+]/g, ''); // Remove non-numeric chars except '+'
+            const { title, content } = noteToShareInfo;
+            const message = `*${title}*\n\n${content}`;
+            const encodedMessage = encodeURIComponent(message);
+
+            if (!phoneNumber) {
+                alert('Por favor, insira um número de WhatsApp.');
+                return;
+            }
+
+            // Check if it's a mobile device to use native app link
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const whatsappUrl = isMobile
+                ? `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`
+                : `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
+            closeShareModal();
+        }
+
+        confirmShareBtn.addEventListener('click', shareNoteToWhatsApp);
+        cancelShareBtn.addEventListener('click', closeShareModal);
+
+
+        // --- LABEL FILTER LOGIC ---
+        function populateLabelFilter() {
+            const allLabels = new Set();
+            for (const dayNotes of Object.values(notes)) {
+                dayNotes.forEach(note => {
+                    if (note.labels) {
+                        note.labels.forEach(label => allLabels.add(label));
+                    }
                 });
             }
+
+            // Keep the "Filtrar por Etiqueta" as the first option
+            labelFilter.innerHTML = '<option value="">Filtrar por Etiqueta</option>';
+            Array.from(allLabels).sort().forEach(label => {
+                const option = document.createElement('option');
+                option.value = label;
+                option.textContent = label;
+                labelFilter.appendChild(option);
+            });
+
+            // Set the active filter value if it exists
+            labelFilter.value = activeLabelFilter;
         }
 
-        function editNote(day, index) {
-            const newTitle = prompt('Editar título:', notes[day][index].title);
-            const newContent = prompt('Editar conteúdo:', notes[day][index].content);
+        labelFilter.addEventListener('change', (event) => {
+            activeLabelFilter = event.target.value;
+            renderNotes(); // Re-render notes with the new filter
+        });
 
-            if (newTitle !== null && newContent !== null && newTitle.trim() !== '' && newContent.trim() !== '') {
-                notes[day][index].title = newTitle.trim();
-                notes[day][index].content = newContent.trim();
+        // --- SEARCH BAR LOGIC ---
+        noteSearchInput.addEventListener('input', (event) => {
+            activeSearchQuery = event.target.value;
+            renderNotes(); // Re-render notes with the new search query
+        });
+
+        // --- AUTO DELETE LOGIC ---
+        function autoDeleteOldNotes() {
+            const interval = localStorage.getItem('autoDeleteInterval') || 'never';
+            if (interval === 'never') return;
+
+            const now = new Date().getTime(); // Current timestamp in milliseconds
+            let threshold = 0;
+
+            switch (interval) {
+                case '1_day':
+                    threshold = now - (24 * 60 * 60 * 1000); // 1 day ago
+                    break;
+                case '1_week':
+                    threshold = now - (7 * 24 * 60 * 60 * 1000); // 1 week ago
+                    break;
+                case '1_month':
+                    // Approximate 1 month (30 days) for simplicity
+                    threshold = now - (30 * 24 * 60 * 60 * 1000); // 1 month ago
+                    break;
             }
 
-            renderNotes();
-            renderCalendar();
+            let notesChanged = false;
+            for (const dayKey in notes) {
+                if (notes.hasOwnProperty(dayKey)) {
+                    // Filter out notes that are older than the threshold
+                    const initialLength = notes[dayKey].length;
+                    notes[dayKey] = notes[dayKey].filter(note => {
+                        return new Date(note.timestamp).getTime() > threshold;
+                    });
+
+                    if (notes[dayKey].length === 0) {
+                        delete notes[dayKey]; // Remove day if no notes left
+                    }
+                    if (notes[dayKey].length !== initialLength) {
+                        notesChanged = true;
+                    }
+                }
+            }
+
+            if (notesChanged) {
+                localStorage.setItem('diaryNotes', JSON.stringify(notes));
+                renderNotes();
+                renderCalendar();
+                populateLabelFilter();
+            }
         }
 
-        function deleteNote(day, index) {
-            notes[day].splice(index, 1);
-            if (notes[day].length === 0) delete notes[day];
-            renderNotes();
-            renderCalendar();
-        }
+        autoDeleteIntervalSelect.addEventListener('change', (event) => {
+            localStorage.setItem('autoDeleteInterval', event.target.value);
+            autoDeleteOldNotes(); // Run deletion immediately on change
+        });
 
+        // --- EVENT LISTENERS ---
         prevMonthBtn.addEventListener('click', () => {
             currentDate.setMonth(currentDate.getMonth() - 1);
+            // Ensure selectedDay is valid for the new month
+            const daysInNewMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+            if (selectedDay > daysInNewMonth) {
+                selectedDay = daysInNewMonth;
+            }
+            activeLabelFilter = ''; // Reset filter when changing month
+            labelFilter.value = '';
+            activeSearchQuery = ''; // Reset search when changing month
+            noteSearchInput.value = '';
             renderCalendar();
         });
 
         nextMonthBtn.addEventListener('click', () => {
             currentDate.setMonth(currentDate.getMonth() + 1);
+            // Ensure selectedDay is valid for the new month
+            const daysInNewMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+            if (selectedDay > daysInNewMonth) {
+                selectedDay = daysInNewMonth;
+            }
+            activeLabelFilter = ''; // Reset filter when changing month
+            labelFilter.value = '';
+            activeSearchQuery = ''; // Reset search when changing month
+            noteSearchInput.value = '';
             renderCalendar();
         });
 
         addNoteBtn.addEventListener('click', addNote);
 
-        function changeColor(color) {
-            document.documentElement.style.setProperty('--bg-gradient', color);
-        }
+        // --- SIDEBAR LOGIC ---
+        menuButton.addEventListener('click', () => {
+            sidebar.classList.add('open');
+            // Apply blur to main content when sidebar opens
+            document.documentElement.style.setProperty('--main-content-blur', 'blur(5px)');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'none');
+            document.documentElement.style.setProperty('--main-content-user-select', 'none');
+        });
 
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            // Remove blur from main content when sidebar closes
+            document.documentElement.style.setProperty('--main-content-blur', 'none');
+            document.documentElement.style.setProperty('--main-content-pointer-events', 'auto');
+            document.documentElement.style.setProperty('--main-content-user-select', 'auto');
+        });
+
+        colorOptions.addEventListener('click', (event) => {
+            if (event.target.tagName === 'BUTTON' && event.target.dataset.color) {
+                const newColor = event.target.dataset.color;
+                document.documentElement.style.setProperty('--bg-gradient', newColor);
+                saveTheme(newColor); // Save the selected theme color
+
+                // Set data-theme attribute on body to allow conditional CSS for note indicator
+                if (newColor.includes('00ff00')) { // Check if the green gradient is selected
+                    document.body.setAttribute('data-theme', 'green-theme');
+                } else {
+                    document.body.setAttribute('data-theme', 'default');
+                }
+
+                sidebar.classList.remove('open'); // Close sidebar after selection
+                // Remove blur from main content when sidebar closes
+                document.documentElement.style.setProperty('--main-content-blur', 'none');
+                document.documentElement.style.setProperty('--main-content-pointer-events', 'auto');
+                document.documentElement.style.setProperty('--main-content-user-select', 'auto');
+            }
+        });
+
+        // Initial setup
+        loadTheme(); // Load theme on page load
+        updateCharCount(); // Initial character count display
         renderCalendar();
+        populateLabelFilter(); // Initial population of filter
+        autoDeleteOldNotes(); // Run auto-deletion on page load
+        autoDeleteIntervalSelect.value = localStorage.getItem('autoDeleteInterval') || 'never'; // Set initial value of auto delete dropdown
     </script>
 </body>
 
